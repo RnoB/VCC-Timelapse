@@ -55,7 +55,8 @@ def dbFiller():
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
                         print(np.sum(image))
-                        if image is not None:
+                        
+                        if np.sum(image)>2000000000 and image is not None:
                             img = PIL.Image.open(imName)
                             exif = {
                                 PIL.ExifTags.TAGS[k]: v
@@ -64,31 +65,32 @@ def dbFiller():
                             }
                             images.append(image)
                             times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
-                    times = np.array(times).astype(np.float32)
+                    if len(images)>0
+                        times = np.array(times).astype(np.float32)
 
-                        
+                            
 
-                    alignMTB = cv2.createAlignMTB()
-                    alignMTB.process(images, images)
-                    calibrateDebevec = cv2.createCalibrateDebevec()
+                        alignMTB = cv2.createAlignMTB()
+                        alignMTB.process(images, images)
+                        calibrateDebevec = cv2.createCalibrateDebevec()
 
-                    responseDebevec = calibrateDebevec.process(images,times)
-                    # Merge images into an HDR linear image
-                    mergeDebevec = cv2.createMergeDebevec()
-                    hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
+                        responseDebevec = calibrateDebevec.process(images,times)
+                        # Merge images into an HDR linear image
+                        mergeDebevec = cv2.createMergeDebevec()
+                        hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
 
-                    tonemap1 = cv2.createTonemapDurand(gamma=2.2)
-                    res_debevec = tonemap1.process(hdrDebevec.copy())
-                    # Save HDR image.
-                    res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                    final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
-                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
-                    values = [year,month,day,hours,minutes]
+                        tonemap1 = cv2.createTonemapDurand(gamma=2.2)
+                        res_debevec = tonemap1.process(hdrDebevec.copy())
+                        # Save HDR image.
+                        res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
+                        final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
+                        cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
+                        values = [year,month,day,hours,minutes]
 
-                    c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
-                    print(year+' '+month+' '+day+' '+hours+':'+minutes)
-                
-                    conn.commit()
+                        c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
+                        print(year+' '+month+' '+day+' '+hours+':'+minutes)
+                    
+                        conn.commit()
                 conn.close()
         time.sleep(15*60)
     print(fileDate)
