@@ -3,10 +3,14 @@ import sqlite3
 import numpy as np
 import os
 import threading
+import time
+
 imagePath = '/timelapse'
 vccDb = 'vccTimelapse.db'
 running = True
-import time
+
+evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
+
 def firstGenDb():
 
     conn = sqlite3.connect(vccDb)
@@ -40,6 +44,10 @@ def dbFiller():
                 minutes = date[13:15]
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(year,month,day,hours,minutes,))
                 if len(c.fetchall()) == 0:
+                    image = []
+                    for ev in evs:
+                        imName = year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
+                        images.append(cv2.imread(imName))
                     values = [year,month,day,hours,minutes]
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
                 
@@ -50,7 +58,7 @@ def dbFiller():
 
 
 
-
+def 
 
 def main():
     if not os.path.isfile(vccDb): 
