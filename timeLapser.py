@@ -5,7 +5,8 @@ import os
 import threading
 import time
 
-imagePath = '/timelapse'
+imagePath = '/timelapse/'
+hdrpath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
@@ -46,7 +47,7 @@ def dbFiller():
                 if len(c.fetchall()) == 0:
                     image = []
                     for ev in evs:
-                        imName = year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
+                        imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         images.append(cv2.imread(imName))
                     values = [year,month,day,hours,minutes]
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
