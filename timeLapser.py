@@ -62,7 +62,7 @@ def dbFiller():
                         print(exif['ExposureTime'][0]/exif['ExposureTime'][1])
                         if image is not None:
                             images.append(image)
-                            times.append(len(images)-1)
+                            times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
                     times = np.array(times)
                         
 
