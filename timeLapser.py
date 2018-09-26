@@ -54,7 +54,7 @@ def dbFiller():
                     for ev in evs:
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
-
+                        print(np.sum(image))
                         if image is not None:
                             img = PIL.Image.open(imName)
                             exif = {
