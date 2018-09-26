@@ -19,7 +19,7 @@ def firstGenDb():
     conn = sqlite3.connect(vccDb)
     c = conn.cursor()
     c.execute('''CREATE TABLE images (year integer, month integer,
-                                      day integer, hours integer, minutes integer,week integer,weekday integer)''')
+                                      day integer, hours integer, minutes integer,week integer,weekday integer,dayRec integer)''')
     c.execute('''CREATE TABLE video (youtube text, duration text,
                                       year integer, month integer,
                                       day integer,week integer)''')
@@ -30,6 +30,7 @@ def firstGenDb():
 
 
 def dbFiller():
+    day0 = datetime.date(2018,8,20)
     while running:
         files = os.listdir(imagePath)
         fileDate = []
@@ -86,15 +87,39 @@ def dbFiller():
                         final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
                         cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
                         iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
+
+                        
+                        day1 = date(year,month,day)
+                        dayRec = (day1-day0).days
+                        week = (day1-day0).weeks
                         values = [year,month,day,hours,minutes,week,weekday]
 
                         c.execute("INSERT INTO images VALUES (?,?,?,?,?,?,?)",values)
-                        print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday))
+                        print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
                     
                         conn.commit()
                 conn.close()
         time.sleep(15*60)
     print(fileDate)
+
+
+def weeklyVideo():
+    conn = sqlite3.connect(vccDb)
+    c = conn.cursor()
+    c.execute("Select year from images")
+    F = c.fetchall()
+    years = np.unique(F)
+    for year in years:
+        c.execute("Select week from images where year = ?",(year,))
+        F = c.fetchall()
+        weeks = np.unique(F)
+        for week in weeks:
+            c.execute("Select * from video where year = ? and week = ? and duration = ?",(year,week,'week'))
+            F = c.fetchall()
+            if len(F) == 0:
+                c.execute("Select month from images where year = ? and week = ?",(year,week))
+                F = c.fetchall()
+                months = np.sort
 
 
 
