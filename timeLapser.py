@@ -6,7 +6,7 @@ import threading
 import time
 import PIL.Image
 import PIL.ExifTags
-
+import datetime
 imagePath = '/timelapse/'
 hdrPath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
@@ -19,7 +19,7 @@ def firstGenDb():
     conn = sqlite3.connect(vccDb)
     c = conn.cursor()
     c.execute('''CREATE TABLE images (year integer, month integer,
-                                      day integer, hours integer, minutes integer)''')
+                                      day integer, hours integer, minutes integer,week integer,weekday integer)''')
     c.execute('''CREATE TABLE video (youtube text, duration text,
                                       year integer, month integer,
                                       day integer)''')
@@ -85,10 +85,11 @@ def dbFiller():
                         res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
                         final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
                         cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
-                        values = [year,month,day,hours,minutes]
+                        iYear,week,weekday = datime.date.isocalendar()
+                        values = [year,month,day,hours,minutes,week,weekday]
 
-                        c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
-                        print(year+' '+month+' '+day+' '+hours+':'+minutes)
+                        c.execute("INSERT INTO images VALUES (?,?,?,?,?,?,?)",values)
+                        print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday))
                     
                         conn.commit()
                 conn.close()
