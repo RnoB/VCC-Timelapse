@@ -60,6 +60,12 @@ def main():
     checkFilesThread.start()
     
     print('nothing')
+    t0 =time.time()
+    while running:
+        time.sleep(60*60)
+        print(' -----> Making Timelapses since')
+
+
 
 if __name__ == '__main__':
     main()
