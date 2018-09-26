@@ -81,7 +81,7 @@ def dbFiller():
                     res_debevec = tonemap1.process(hdrDebevec.copy())
                     # Save HDR image.
                     res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                    final_image = np.resize(res_debevec_8bit,(2875,2160))
+                    final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
                     cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
                     values = [year,month,day,hours,minutes]
 
