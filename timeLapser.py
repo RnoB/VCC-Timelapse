@@ -51,7 +51,7 @@ def dbFiller():
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         images.append(cv2.imread(imName))
                     #print(images)
-                    print(image[0])
+                    print(images[0])
                     alignMTB = cv2.createAlignMTB()
                     alignMTB.process(images, images)
                     calibrateDebevec = cv2.createCalibrateDebevec()
