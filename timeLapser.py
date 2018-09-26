@@ -36,8 +36,6 @@ def dbFiller():
         for file  in files:
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
-        conn = sqlite3.connect(vccDb)
-        c = conn.cursor()
         for date in fileDate:
             if len(date) == 15:
                 year = date[0:4]
@@ -45,6 +43,8 @@ def dbFiller():
                 day = date[8:10]
                 hours = date[11:13]
                 minutes = date[13:15]
+                conn = sqlite3.connect(vccDb)
+                c = conn.cursor()
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(year,month,day,hours,minutes,))
                 if len(c.fetchall()) == 0:
                     images = []
@@ -82,12 +82,11 @@ def dbFiller():
                     cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec_8bit)
                     print(year+' '+month+' '+day+' '+hours+':'+minutes)
                     values = [year,month,day,hours,minutes]
-                    conn = sqlite3.connect(vccDb)
-                    c = conn.cursor()
+
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
                 
                     conn.commit()
-                    conn.close()
+                conn.close()
         time.sleep(15*60)
     print(fileDate)
 
