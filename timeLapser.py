@@ -2,7 +2,7 @@ import cv2
 import sqlite3
 import numpy as np
 import os
-import thread
+import threading
 imagePath = '/timelapse'
 vccDb = 'vccTimelapse.db'
 running = True
