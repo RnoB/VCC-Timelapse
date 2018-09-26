@@ -82,10 +82,12 @@ def dbFiller():
                     cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec_8bit)
                     print(year+' '+month+' '+day+' '+hours+':'+minutes)
                     values = [year,month,day,hours,minutes]
+                    conn = sqlite3.connect(vccDb)
+                    c = conn.cursor()
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
                 
-        conn.commit()
-        conn.close()
+                    conn.commit()
+                    conn.close()
         time.sleep(15*60)
     print(fileDate)
 
