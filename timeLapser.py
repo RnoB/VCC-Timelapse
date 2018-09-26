@@ -54,6 +54,7 @@ def dbFiller():
                         if image is not None:
                             images.append(image)
                             times.append(timers[len(images)-1])
+                    time = np.array(times)
                         
 
                     alignMTB = cv2.createAlignMTB()
