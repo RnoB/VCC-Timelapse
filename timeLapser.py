@@ -45,7 +45,7 @@ def dbFiller():
                 minutes = date[13:15]
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(year,month,day,hours,minutes,))
                 if len(c.fetchall()) == 0:
-                    image = []
+                    images = []
                     for ev in evs:
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         images.append(cv2.imread(imName))
