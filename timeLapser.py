@@ -89,7 +89,7 @@ def dbFiller():
                         iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
 
                         
-                        day1 = date(int(year),int(month),int(day))
+                        day1 = datetime.date(int(year),int(month),int(day))
                         dayRec = (day1-day0).days
                         week = (day1-day0).weeks
                         values = [year,month,day,hours,minutes,week,weekday]
