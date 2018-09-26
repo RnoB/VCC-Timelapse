@@ -59,7 +59,7 @@ def dbFiller():
                             if k in PIL.ExifTags.TAGS
                         }
                         print(exif['ExposureTime'])
-                        print(exif['ExposureTime'][1]/exif['ExposureTime'][0])
+                        print(exif['ExposureTime'][0]/exif['ExposureTime'][1])
                         if image is not None:
                             images.append(image)
                             times.append(len(images)-1)
