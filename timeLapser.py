@@ -58,10 +58,11 @@ def dbFiller():
                             for k, v in img._getexif().items()
                             if k in PIL.ExifTags.TAGS
                         }
+                        print(exif['ExposureTime'])
                         print(exif['ExposureTime'][1]/exif['ExposureTime'][0])
                         if image is not None:
                             images.append(image)
-                            times.append(timers[len(images)-1])
+                            times.append(len(images)-1)
                     times = np.array(times)
                         
 
