@@ -52,15 +52,14 @@ def dbFiller():
                     for ev in evs:
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
-                        img = PIL.Image.open(imName)
-                        exif = {
-                            PIL.ExifTags.TAGS[k]: v
-                            for k, v in img._getexif().items()
-                            if k in PIL.ExifTags.TAGS
-                        }
-                        print(exif['ExposureTime'])
-                        print(exif['ExposureTime'][0]/exif['ExposureTime'][1])
+
                         if image is not None:
+                            img = PIL.Image.open(imName)
+                            exif = {
+                                PIL.ExifTags.TAGS[k]: v
+                                for k, v in img._getexif().items()
+                                if k in PIL.ExifTags.TAGS
+                            }
                             images.append(image)
                             times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
                     times = np.array(times).astype(np.float32)
