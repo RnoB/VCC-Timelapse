@@ -4,7 +4,7 @@ import numpy as np
 import os
 import threading
 import time
-import PIL.Image
+import pil.Image
 
 imagePath = '/timelapse/'
 hdrPath = '/timelapse/hdr/'
