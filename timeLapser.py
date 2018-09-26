@@ -53,8 +53,12 @@ def dbFiller():
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
                         img = PIL.Image.open(imName)
-                        exif_data = img._getexif()
-                        print(exif_data)
+                        exif = {
+                            PIL.ExifTags.TAGS[k]: v
+                            for k, v in img._getexif().items()
+                            if k in PIL.ExifTags.TAGS
+                        }
+                        print(exif)
                         if image is not None:
                             images.append(image)
                             times.append(timers[len(images)-1])
