@@ -7,12 +7,22 @@ import time
 import PIL.Image
 import PIL.ExifTags
 import datetime
+from shutil import copyfile
+import subprocess
 imagePath = '/timelapse/'
 hdrPath = '/timelapse/hdr/'
+weekTemp = '/timelapse/tmp/week/'
+monthTemp = '/timelapse/tmp/month/'
+weekVid = '/timelapse/video/week/'
+monthVid = '/timelapse/video/month/'
 vccDb = 'vccTimelapse.db'
 running = True
 
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
+
+ffmpegWeek = "ffmpeg -y -r 30 -i \""+weekTemp+"image%08d.png\" -format rgb32 -s 2875x2160 -vcodec libx264 "
+
+day0 = datetime.date(2018,8,20)
 
 def firstGenDb():
 
@@ -29,8 +39,20 @@ def firstGenDb():
 
 
 
+def pather(path,expId):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    path = path  + expId+ '\\'
+    if not os.path.exists(path):
+        os.makedirs(path)
+    
+    return path
+
+def fileNamer(year,month,day,hours,minutes):
+    return hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg'
+
+
 def dbFiller():
-    day0 = datetime.date(2018,8,20)
     while running:
         files = os.listdir(imagePath)
         fileDate = []
@@ -85,7 +107,7 @@ def dbFiller():
                         # Save HDR image.
                         res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
                         final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
-                        cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
+                        cv2.imwrite(fileNamer(year,month,day,hours,minutes), final_image)
                         iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
 
                         
@@ -104,22 +126,50 @@ def dbFiller():
 
 
 def weeklyVideo():
+    
+    currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
     conn = sqlite3.connect(vccDb)
     c = conn.cursor()
-    c.execute("Select year from images")
+    c.execute("Select week from images")
     F = c.fetchall()
-    years = np.unique(F)
-    for year in years:
-        c.execute("Select week from images where year = ?",(year,))
+    weeks = np.unique(F)
+
+    for week in weeks:
+        c.execute("Select * from video where week = ? and duration = ?",(week,'week'))
         F = c.fetchall()
-        weeks = np.unique(F)
-        for week in weeks:
-            c.execute("Select * from video where year = ? and week = ? and duration = ?",(year,week,'week'))
+        if len(F) == 0 and week<currentWeek:
+            step = 0
+            os.remove(weekVid+'*.jpg')
+            os.remove(weekVid+'*.mp4')
+            c.execute("Select dayRec from images where week = ?",(week,))
             F = c.fetchall()
-            if len(F) == 0:
-                c.execute("Select month from images where year = ? and week = ?",(year,week))
+            days = np.sort(np.unique(F))
+            for day in days:
+                c.execute("Select hours from images where dayRec = ?",(day,))
                 F = c.fetchall()
-                months = np.sort
+                hours = np.sort(np.unique(F))
+                c.execute("Select year from images where dayRec = ?",(day,))
+                year = c.fetchall()[0]
+                c.execute("Select month from images where dayRec = ?",(day,))
+                month = c.fetchall()[0]
+                for hour in hours:
+                    c.execute("Select minutes from images where dayRec = ? and hour = ?",(day,hour))
+                    F = c.fetchall()
+                    minutes = np.sort(np.unique(F))
+                    for minute in minutes:
+                        path = fileNamer(year,month,day,hour,minute)
+
+                        copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
+                        step = step+1
+            videoName = 'week'+str(week).zfill(5)+'.mp4'
+            videoLine = ffmpeg + weekTemp+videoName
+            print(videoLine)
+            subprocess.call(videoLine)
+            copyfile(path,pather(weekVid,str(week).zfill(5)))
+
+
+
+
 
 
 
