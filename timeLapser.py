@@ -46,7 +46,9 @@ def dbFiller():
                 conn = sqlite3.connect(vccDb)
                 c = conn.cursor()
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(year,month,day,hours,minutes,))
-                if len(c.fetchall()) == 0:
+                F = c.fetchall()
+                print(F)
+                if len(F) == 0:
                     images = []
                     times = []
                     for ev in evs:
