@@ -91,7 +91,7 @@ def dbFiller():
                         
                         day1 = datetime.date(int(year),int(month),int(day))
                         dayRec = (day1-day0).days
-                        week = (day1-day0).weeks
+                        week = np.floor((day1-day0).days/7.0).astype(int)
                         values = [year,month,day,hours,minutes,week,weekday]
 
                         c.execute("INSERT INTO images VALUES (?,?,?,?,?,?,?)",values)
