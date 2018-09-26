@@ -74,8 +74,14 @@ def dbFiller():
                     # Merge images into an HDR linear image
                     mergeDebevec = cv2.createMergeDebevec()
                     hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
+
+                    tonemap1 = cv2.createTonemapDurand(gamma=2.2)
+                    res_debvec = tonemap1.process(hdrDebvec.copy())
+                    tonemap2 = cv2.createTonemapDurand(gamma=1.3)
+                    res_robertson = tonemap2.process(hdr_robertson.copy())
                     # Save HDR image.
-                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', hdrDebevec)
+                    res_debvec_8bit = np.clip(res_debvec*255, 0, 255).astype('uint8')
+                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec)
                     values = [year,month,day,hours,minutes]
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
                 
