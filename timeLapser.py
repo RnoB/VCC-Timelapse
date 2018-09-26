@@ -10,7 +10,7 @@ hdrPath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
-times = (2.9**2)*(2**-(np.array([-1.00,-.50,0.0,.50,.100], dtype=np.float32)))
+timers = (2.9**2)*(2**-(np.array([-1.00,-.50,0.0,.50,.100], dtype=np.float32)))
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
 def firstGenDb():
@@ -47,11 +47,14 @@ def dbFiller():
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(year,month,day,hours,minutes,))
                 if len(c.fetchall()) == 0:
                     images = []
+                    times = []
                     for ev in evs:
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
-                        images.append(image)
-                        print(image)
+                        if image is not None:
+                            images.append(image)
+                            timer.append(time[len(images)])
+                        
 
                     alignMTB = cv2.createAlignMTB()
                     alignMTB.process(images, images)
