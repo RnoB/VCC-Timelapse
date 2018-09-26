@@ -9,6 +9,7 @@ import PIL.ExifTags
 import datetime
 from shutil import copyfile
 import subprocess
+from upload_video import upload_video
 imagePath = '/timelapse/'
 hdrPath = '/timelapse/hdr/'
 weekTemp = '/timelapse/tmp/week/'
@@ -166,6 +167,8 @@ def weeklyVideo():
             print(videoLine)
             subprocess.call(videoLine)
             copyfile(path,pather(weekVid,str(week).zfill(5)))
+            upload_video(path)
+
 
 
 
@@ -185,7 +188,7 @@ def main():
     t0 =time.time()
     while running:
         time.sleep(60*60)
-        print(' -----> Making Timelapses since')
+        print(' -----> Making Timelapses since '+str(int((time.time()-t0)/60)) +' hours')
 
 
 

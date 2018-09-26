@@ -104,3 +104,5 @@ venv.bak/
 .mypy_cache/
 
 *.db
+
+client_secrets.json
