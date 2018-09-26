@@ -63,7 +63,7 @@ def dbFiller():
                             images.append(image)
                             times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
                     times = np.array(times).astype(np.float32)
-                    print(times)
+
                         
 
                     alignMTB = cv2.createAlignMTB()
@@ -78,8 +78,8 @@ def dbFiller():
                     tonemap1 = cv2.createTonemapDurand(gamma=2.2)
                     res_debevec = tonemap1.process(hdrDebevec.copy())
                     # Save HDR image.
-                    res_debvec_8bit = np.clip(res_debvec*255, 0, 255).astype('uint8')
-                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec)
+                    res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
+                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec_8bit)
                     values = [year,month,day,hours,minutes]
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
                 
