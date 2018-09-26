@@ -38,11 +38,11 @@ def dbFiller():
         fileDate = np.unique(fileDate)
         for date in fileDate:
             if len(date) == 15:
-                year = date[0:4]
-                month = date[5:7]
-                day = date[8:10]
-                hours = date[11:13]
-                minutes = date[13:15]
+                year = int(date[0:4])
+                month = int(date[5:7])
+                day = int(date[8:10])
+                hours = int(date[11:13])
+                minutes = int(date[13:15])
                 conn = sqlite3.connect(vccDb)
                 c = conn.cursor()
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(year,month,day,hours,minutes,))
