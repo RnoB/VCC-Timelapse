@@ -51,7 +51,7 @@ def dbFiller():
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
                         images.append(image)
-                        print(np.shape(image))
+                        print(image)
 
                     alignMTB = cv2.createAlignMTB()
                     alignMTB.process(images, images)
