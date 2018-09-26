@@ -50,6 +50,8 @@ def dbFiller():
                     for ev in evs:
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         images.append(cv2.imread(imName))
+                        if images[-1] == []:
+                            images[-1] = images[-2]
                         print(np.shape(images[-1]))
 
                     alignMTB = cv2.createAlignMTB()
