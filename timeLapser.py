@@ -65,7 +65,7 @@ def dbFiller():
                             }
                             images.append(image)
                             times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
-                    if len(images)>0
+                    if len(images)>0:
                         times = np.array(times).astype(np.float32)
 
                             
