@@ -58,7 +58,6 @@ def dbFiller():
 
 
 
-def 
 
 def main():
     if not os.path.isfile(vccDb): 
