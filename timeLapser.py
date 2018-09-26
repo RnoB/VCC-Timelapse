@@ -4,13 +4,14 @@ import numpy as np
 import os
 import threading
 import time
+import PIL.Image
 
 imagePath = '/timelapse/'
 hdrPath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
-timers = (2.9**2)*(2**-(np.array([-1.00,-.50,0.0,.50,.100], dtype=np.float32)))
+timers = (2.9**2)*(2**-(np.array([-10,-5,0.0,5,10], dtype=np.float32)))
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
 def firstGenDb():
@@ -51,6 +52,9 @@ def dbFiller():
                     for ev in evs:
                         imName = imagePath+year+'-'+month+'-'+day+'_'+hours+minutes+ev+'.jpg'
                         image = cv2.imread(imName)
+                        img = PIL.Image.open(imName)
+                        exif_data = img._getexif()
+                        print(exif_data)
                         if image is not None:
                             images.append(image)
                             times.append(timers[len(images)-1])
