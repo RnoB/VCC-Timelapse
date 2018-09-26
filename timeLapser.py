@@ -85,7 +85,7 @@ def dbFiller():
                         res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
                         final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
                         cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
-                        iYear,week,weekday = datetime.date.isocalendar()
+                        iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
                         values = [year,month,day,hours,minutes,week,weekday]
 
                         c.execute("INSERT INTO images VALUES (?,?,?,?,?,?,?)",values)
