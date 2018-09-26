@@ -8,7 +8,7 @@ imagePath = '/timelapse'
 
 
 def dbFiller():
-    files = os.listdirs(imagePath)
+    files = os.listdir(imagePath)
     fileDate = []
     for file  in files:
         fileDate.append(file[0:15])
