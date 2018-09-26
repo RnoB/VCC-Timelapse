@@ -10,7 +10,7 @@ hdrpath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
-evValues = [-10,-5,0,5]
+evValues = np.array([-10,-5,0,5,10])
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
 def firstGenDb():
