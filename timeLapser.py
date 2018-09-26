@@ -57,7 +57,7 @@ def dbFiller():
                         image = cv2.imread(imName)
 
                         
-                        if image is not None and np.sum(image)>2000000000 :
+                        if image is not None and np.sum(image)>2500000000 :
                             img = PIL.Image.open(imName)
                             exif = {
                                 PIL.ExifTags.TAGS[k]: v
