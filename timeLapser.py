@@ -10,7 +10,7 @@ hdrpath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
-times = (2.9**2)*(2**-(np.array([-10.0,-5.0,0.0,5.0,10.0])))
+times = (2.9**2)*(2**-(np.array([-10.0,-5.0,0.0,5.0,10.0], dtype=np.float32)))
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
 def firstGenDb():
@@ -59,7 +59,7 @@ def dbFiller():
                     responseDebevec = calibrateDebevec.process(images,times)
                     # Merge images into an HDR linear image
                     mergeDebevec = cv2.createMergeDebevec()
-                    hdrDebevec = mergeDebevec.process(images, timees, responseDebevec)
+                    hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
                     # Save HDR image.
                     cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', hdrDebevec)
                     values = [year,month,day,hours,minutes]
