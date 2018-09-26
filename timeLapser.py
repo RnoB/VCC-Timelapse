@@ -79,7 +79,23 @@ def dbFiller():
                     res_debevec = tonemap1.process(hdrDebevec.copy())
                     # Save HDR image.
                     res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec_8bit)
+                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'deb.jpg', res_debevec_8bit)
+                    
+
+
+                    merge_mertens = cv2.createMergeMertens()
+                    res_mertens = merge_mertens.process(images)
+                    res_mertens_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
+                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'mer.jpg', res_mertens_8bit)
+
+
+                    merge_robertson = cv2.createMergeRobertson()
+                    hdr_robertson = merge_robertson.process(images, times=times)
+                    tonemap2 = cv2.createTonemapDurand(gamma=1.3)
+                    res_robertson = tonemap2.process(hdr_robertson.copy())
+                    res_robertson_8bit = np.clip(res_robertson*255, 0, 255).astype('uint8')
+                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'rob.jpg', res_robertson_8bit)
+
                     values = [year,month,day,hours,minutes]
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
                 
