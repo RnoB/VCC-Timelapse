@@ -12,7 +12,6 @@ hdrPath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
-timers = (2.9**2)*(2**-(np.array([-10,-5,0.0,5,10], dtype=np.float32)))
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
 def firstGenDb():
@@ -59,7 +58,7 @@ def dbFiller():
                             for k, v in img._getexif().items()
                             if k in PIL.ExifTags.TAGS
                         }
-                        print(exif)
+                        print(exif['ExposureTime'][1]/exif['ExposureTime'][0])
                         if image is not None:
                             images.append(image)
                             times.append(timers[len(images)-1])
