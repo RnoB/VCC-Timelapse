@@ -63,7 +63,8 @@ def dbFiller():
                         if image is not None:
                             images.append(image)
                             times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
-                    times = np.array(times)
+                    times = np.array(times).astype(np.float32)
+                    print(times)
                         
 
                     alignMTB = cv2.createAlignMTB()
