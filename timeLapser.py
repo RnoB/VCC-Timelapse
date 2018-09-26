@@ -76,7 +76,7 @@ def dbFiller():
                     hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
 
                     tonemap1 = cv2.createTonemapDurand(gamma=2.2)
-                    res_debvec = tonemap1.process(hdrDebvec.copy())
+                    res_debevec = tonemap1.process(hdrDebevec.copy())
                     tonemap2 = cv2.createTonemapDurand(gamma=1.3)
                     res_robertson = tonemap2.process(hdr_robertson.copy())
                     # Save HDR image.
