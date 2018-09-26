@@ -6,7 +6,7 @@ import threading
 import time
 
 imagePath = '/timelapse/'
-hdrpath = '/timelapse/hdr/'
+hdPpath = '/timelapse/hdr/'
 vccDb = 'vccTimelapse.db'
 running = True
 
