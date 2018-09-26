@@ -45,10 +45,9 @@ def dbFiller():
                 minutes = date[13:15]
                 conn = sqlite3.connect(vccDb)
                 c = conn.cursor()
-                print((int(year),int(month),int(day),int(hours),int(minutes),))
                 c.execute("Select * from images where year = ? and month = ? and day = ? and hours = ? and minutes = ?",(int(year),int(month),int(day),int(hours),int(minutes),))
                 F = c.fetchall()
-                print(F)
+
                 if len(F) == 0:
                     images = []
                     times = []
@@ -82,11 +81,12 @@ def dbFiller():
                     res_debevec = tonemap1.process(hdrDebevec.copy())
                     # Save HDR image.
                     res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', res_debevec_8bit)
-                    print(year+' '+month+' '+day+' '+hours+':'+minutes)
+                    final_image = np.resize(res_debevec_8bit,(2875,2160))
+                    cv2.imwrite(hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg', final_image)
                     values = [year,month,day,hours,minutes]
 
                     c.execute("INSERT INTO images VALUES (?,?,?,?,?)",values)
+                    print(year+' '+month+' '+day+' '+hours+':'+minutes)
                 
                     conn.commit()
                 conn.close()
