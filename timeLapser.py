@@ -22,7 +22,7 @@ def firstGenDb():
                                       day integer, hours integer, minutes integer,week integer,weekday integer)''')
     c.execute('''CREATE TABLE video (youtube text, duration text,
                                       year integer, month integer,
-                                      day integer)''')
+                                      day integer,week integer)''')
     conn.commit()
     conn.close()
     
