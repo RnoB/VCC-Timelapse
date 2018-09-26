@@ -55,7 +55,7 @@ def dbFiller():
                     alignMTB.process(images, images)
                     calibrateDebevec = cv2.createCalibrateDebevec()
                     print(times)
-                    print(times.tyoe())
+                    print(times.type())
                     responseDebevec = calibrateDebevec.process(images,times)
                     # Merge images into an HDR linear image
                     mergeDebevec = cv2.createMergeDebevec()
