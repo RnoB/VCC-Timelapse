@@ -200,7 +200,7 @@ def weeklyVideo():
                 videoLine = ffmpegWeek + weekTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine,shell=True)
-                copyfile(path,pather(weekVid,str(week).zfill(5)))
+                copyfile(path,pather(weekVid,str(week).zfill(5))+weekVid)
                 videoId = upload_video(path,title = "Week "+str(week))
                 values = [videoId,"week",year,month,dayRec,int(week)]
 
@@ -214,6 +214,8 @@ def weeklyVideo():
 def monthlyVideo():
     #tSleep = 26-dt.datetime.now().hour
     #print('sleeping for '+str(tSleep)+' hours')
+    stepMonth = 2
+
     print('video')
     while running:
         currentMonth = datetime.date.today().month
@@ -229,6 +231,7 @@ def monthlyVideo():
             print(F)
             if len(F) == 0 and month<currentMonth:
                 step = 0
+                image = 0   
                 os.remove(monthVid+'*.jpg')
                 os.remove(monthVid+'*.mp4')
                 c.execute("Select dayRec from images where month = ?",(int(month),))
@@ -249,10 +252,12 @@ def monthlyVideo():
                         F = c.fetchall()
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
-                            path = fileNamer(year,month,day,hour,minute)
+                            if image%stepMonth == 0:
+                                path = fileNamer(year,month,day,hour,minute)
 
-                            copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
-                            step = step+1
+                                copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
+                                step = step+1
+                            image=image+1
                 videoName = 'month'+str(month).zfill(5)+'.mp4'
                 videoLine = ffmpegMonth + monthTemp+videoName
                 print(videoLine)
