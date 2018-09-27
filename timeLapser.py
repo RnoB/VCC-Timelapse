@@ -346,7 +346,7 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,3))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,6))
+    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,5))
     checkFilesThread.daemon = True
     checkFilesThread.start()
     #weekThread = threading.Thread(target=weeklyVideo)
