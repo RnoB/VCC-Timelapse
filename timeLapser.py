@@ -147,7 +147,7 @@ def weeklyVideo():
         weeks = np.unique(F)
 
         for week in weeks:
-            c.execute("Select * from video where week = ? and duration = ?",(week,'week'))
+            c.execute("Select * from video where week = ? and duration = ?",(int(week),'week'))
             F = c.fetchall()
             print(F)
             if len(F) == 0 and week<currentWeek:
@@ -163,15 +163,15 @@ def weeklyVideo():
                 days = np.sort(np.unique(F))
                 print(week)
                 for day in days:
-                    c.execute("Select hours from images where dayRec = ?",(day,))
+                    c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
-                    c.execute("Select year from images where dayRec = ?",(day,))
+                    c.execute("Select year from images where dayRec = ?",(int(day),))
                     year = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(day,))
+                    c.execute("Select month from images where dayRec = ?",(int(day),))
                     month = c.fetchall()[0]
                     for hour in hours:
-                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(day,hour))
+                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
                         F = c.fetchall()
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
