@@ -73,8 +73,8 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
         for file  in files:
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
-
-        deltaDay += -1
+        if today:
+            deltaDay += -1
 
         for date in fileDate:
 
