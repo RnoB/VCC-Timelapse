@@ -119,7 +119,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                             res_debevec = tonemap1.process(hdrDebevec.copy())
                             # Save HDR image.
                             res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                            final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
+                            final_image = cv2.resize(res_debevec_8bit,None,fx=3280.0/2874.0,fy=2160.0/2464.0)
                             cv2.imwrite(fileNamer(year,month,day,hours,minutes), final_image)
                                 
                             iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
