@@ -21,7 +21,7 @@ running = True
 
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
-ffmpegWeek = ["ffmpeg","-y"," -r"," 30"," -i ","\""+weekTemp+"image%08d.png\""," -format"," rgb32"," -s", "2875x2160"," -vcodec"," libx264 "]
+ffmpegWeek = "ffmpeg -y -r 30 -i \""+weekTemp+"image%08d.png\" -format rgb32 -s 2875x2160  -vcodec libx264 "
 
 day0 = datetime.date(2018,8,20)
 
@@ -179,11 +179,9 @@ def weeklyVideo():
                             copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                 videoName = 'week'+str(week).zfill(5)+'.mp4'
-                videoLine = ffmpegWeek
-                videoLine.append(weekTemp+videoName)
-                #videoLine = ffmpegWeek + weekTemp+videoName
+                videoLine = ffmpegWeek + weekTemp+videoName
                 print(videoLine)
-                subprocess.call(videoLine)
+                subprocess.call(videoLine,shell=True)
                 copyfile(path,pather(weekVid,str(week).zfill(5)))
                 videoId = upload_video(path,title = "Week "+str(week))
                 values = [videoId,"week",year,month,dayRec,int(week)]
