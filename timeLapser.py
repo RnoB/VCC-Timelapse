@@ -161,7 +161,7 @@ def weeklyVideo():
                 c.execute("Select dayRec from images where week = ?",(week,))
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
-                print(days)
+                print(week)
                 for day in days:
                     c.execute("Select hours from images where dayRec = ?",(day,))
                     F = c.fetchall()
