@@ -153,8 +153,11 @@ def weeklyVideo():
             print(F)
             if len(F) == 0 and week<currentWeek:
                 step = 0
-                os.remove(weekVid+'*.jpg')
-                os.remove(weekVid+'*.mp4')
+                try:
+                    os.remove(weekVid+'*.jpg')
+                    os.remove(weekVid+'*.mp4')
+                except:
+                    pass
                 c.execute("Select dayRec from images where week = ?",(week,))
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
@@ -319,9 +322,9 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    # weekThread = threading.Thread(target=weeklyVideo)
-    # weekThread.daemon = True
-    # weekThread.start()
+    weekThread = threading.Thread(target=weeklyVideo)
+    weekThread.daemon = True
+    weekThread.start()
     # monthThread = threading.Thread(target=monthlyVideo)
     # monthThread.daemon = True
     # monthThread.start()
