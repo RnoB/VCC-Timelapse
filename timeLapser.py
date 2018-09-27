@@ -118,7 +118,7 @@ def dbFiller():
                         dayRec = (day1-day0).days
                         week = np.floor((day1-day0).days/7.0).astype(int)
                         values = [year,month,day,hours,minutes,int(week),weekday,dayRec]
-                        print(values)
+
                         c.execute("INSERT INTO images VALUES (?,?,?,?,?,?,?,?)",values)
                         print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
                     
