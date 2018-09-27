@@ -83,7 +83,9 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                 month = date[5:7]
                 day = date[8:10]
                 todayDate = datetime.date.today()
-                day1 = datetime.date(int(year),int(month),int(day)-deltaDay)
+                if day>1:
+                    day=int(day)-deltaDay
+                day1 = datetime.date(int(year),int(month),int(day))
                 if (day1 == todayDate and today) or (day1!=todayDate and not today):
                     hours = date[11:13]
                     minutes = date[13:15]
