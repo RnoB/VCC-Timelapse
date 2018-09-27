@@ -16,7 +16,7 @@ weekTemp = '/timelapse/tmp/week/'
 monthTemp = '/timelapse/tmp/month/'
 weekVid = '/timelapse/video/week/'
 monthVid = '/timelapse/video/month/'
-vccDb = 'vccTimelapse.db'
+vccDb = '/home/timelapse/VCC-Timelapse/vccTimelapse.db'
 running = True
 
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
@@ -69,8 +69,8 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                 month = date[5:7]
                 day = date[8:10]
                 todayDate = datetime.date.today()
-                day0 = datetime.date(int(year),int(month),int(day))
-                if (day0 == todayDate and today) or (day0!=todayDate and not today):
+                day1 = datetime.date(int(year),int(month),int(day))
+                if (day1 == todayDate and today) or (day1!=todayDate and not today):
                     hours = date[11:13]
                     minutes = date[13:15]
                     conn = sqlite3.connect(vccDb)
@@ -120,7 +120,6 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                             iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
 
                             
-                            day1 = datetime.date(int(year),int(month),int(day))
                             dayRec = (day1-day0).days
                             week = np.floor((day1-day0).days/7.0).astype(int)
                             values = [year,month,day,hours,minutes,int(week),weekday,dayRec]
@@ -160,6 +159,7 @@ def weeklyVideo():
                     pass
                 c.execute("Select dayRec from images where week = ?",(week,))
                 F = c.fetchall()
+                print(F)
                 days = np.sort(np.unique(F))
                 print(week)
                 for day in days:
