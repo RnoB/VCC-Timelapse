@@ -127,47 +127,50 @@ def dbFiller():
 
 
 def weeklyVideo():
-    
-    currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
-    conn = sqlite3.connect(vccDb)
-    c = conn.cursor()
-    c.execute("Select week from images")
-    F = c.fetchall()
-    weeks = np.unique(F)
-
-    for week in weeks:
-        c.execute("Select * from video where week = ? and duration = ?",(week,'week'))
+    #tSleep = 25-dt.datetime.now().hour
+    #print('sleeping for '+str(tSleep)+' hours')
+    while running:
+        currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
+        conn = sqlite3.connect(vccDb)
+        c = conn.cursor()
+        c.execute("Select week from images")
         F = c.fetchall()
-        if len(F) == 0 and week<currentWeek:
-            step = 0
-            os.remove(weekVid+'*.jpg')
-            os.remove(weekVid+'*.mp4')
-            c.execute("Select dayRec from images where week = ?",(week,))
-            F = c.fetchall()
-            days = np.sort(np.unique(F))
-            for day in days:
-                c.execute("Select hours from images where dayRec = ?",(day,))
-                F = c.fetchall()
-                hours = np.sort(np.unique(F))
-                c.execute("Select year from images where dayRec = ?",(day,))
-                year = c.fetchall()[0]
-                c.execute("Select month from images where dayRec = ?",(day,))
-                month = c.fetchall()[0]
-                for hour in hours:
-                    c.execute("Select minutes from images where dayRec = ? and hour = ?",(day,hour))
-                    F = c.fetchall()
-                    minutes = np.sort(np.unique(F))
-                    for minute in minutes:
-                        path = fileNamer(year,month,day,hour,minute)
+        weeks = np.unique(F)
 
-                        copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
-                        step = step+1
-            videoName = 'week'+str(week).zfill(5)+'.mp4'
-            videoLine = ffmpeg + weekTemp+videoName
-            print(videoLine)
-            subprocess.call(videoLine)
-            copyfile(path,pather(weekVid,str(week).zfill(5)))
-            upload_video(path)
+        for week in weeks:
+            c.execute("Select * from video where week = ? and duration = ?",(week,'week'))
+            F = c.fetchall()
+            if len(F) == 0 and week<currentWeek:
+                step = 0
+                os.remove(weekVid+'*.jpg')
+                os.remove(weekVid+'*.mp4')
+                c.execute("Select dayRec from images where week = ?",(week,))
+                F = c.fetchall()
+                days = np.sort(np.unique(F))
+                for day in days:
+                    c.execute("Select hours from images where dayRec = ?",(day,))
+                    F = c.fetchall()
+                    hours = np.sort(np.unique(F))
+                    c.execute("Select year from images where dayRec = ?",(day,))
+                    year = c.fetchall()[0]
+                    c.execute("Select month from images where dayRec = ?",(day,))
+                    month = c.fetchall()[0]
+                    for hour in hours:
+                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(day,hour))
+                        F = c.fetchall()
+                        minutes = np.sort(np.unique(F))
+                        for minute in minutes:
+                            path = fileNamer(year,month,day,hour,minute)
+
+                            copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
+                            step = step+1
+                videoName = 'week'+str(week).zfill(5)+'.mp4'
+                videoLine = ffmpeg + weekTemp+videoName
+                print(videoLine)
+                subprocess.call(videoLine)
+                copyfile(path,pather(weekVid,str(week).zfill(5)))
+                upload_video(path,title = "Week "+str(week))
+        time.sleep(24*3600)
 
 
 
@@ -183,12 +186,15 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller)
     checkFilesThread.daemon = True
     checkFilesThread.start()
+    weekThread = threading.Thread(target=dbFiller)
+    weekThread.daemon = True
+    weekThread.start()
     
     print('nothing')
     t0 =time.time()
     while running:
         time.sleep(60*60)
-        print(' -----> Making Timelapses since '+str(int((time.time()-t0)/60)) +' hours')
+        print(' -----> Making Timelapses since '+str(int((time.time()-t0)/3600)) +' hours')
 
 
 
