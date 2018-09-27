@@ -175,7 +175,7 @@ def weeklyVideo():
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
                             path = fileNamer(year,month,day,hour,minute)
-
+                            print(path)
                             copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                 videoName = 'week'+str(week).zfill(5)+'.mp4'
