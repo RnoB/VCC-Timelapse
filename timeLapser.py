@@ -190,9 +190,9 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller)
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    weekThread = threading.Thread(target=weeklyVideo)
-    weekThread.daemon = True
-    weekThread.start()
+    #weekThread = threading.Thread(target=weeklyVideo)
+    #weekThread.daemon = True
+    #weekThread.start()
     
     print('nothing')
     t0 =time.time()
