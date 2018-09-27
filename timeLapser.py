@@ -316,18 +316,18 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (False,7*24*60*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
-    checkFilesThread.daemon = True
-    checkFilesThread.start()
-    weekThread = threading.Thread(target=weeklyVideo)
-    weekThread.daemon = True
-    weekThread.start()
-    monthThread = threading.Thread(target=monthlyVideo)
-    monthThread.daemon = True
-    monthThread.start()
-    everythingThread = threading.Thread(target=everythingVideo)
-    everythingThread.daemon = True
-    everythingThread.start()
+    # checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
+    # checkFilesThread.daemon = True
+    # checkFilesThread.start()
+    # weekThread = threading.Thread(target=weeklyVideo)
+    # weekThread.daemon = True
+    # weekThread.start()
+    # monthThread = threading.Thread(target=monthlyVideo)
+    # monthThread.daemon = True
+    # monthThread.start()
+    # everythingThread = threading.Thread(target=everythingVideo)
+    # everythingThread.daemon = True
+    # everythingThread.start()
     
     print('nothing')
     t0 =time.time()
