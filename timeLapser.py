@@ -21,7 +21,7 @@ running = True
 
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
 
-ffmpegWeek = "ffmpeg -y -r 30 -i \""+weekTemp+"image%08d.png\" -format rgb32 -s 2875x2160  -vcodec libx264 "
+ffmpegWeek = "ffmpeg -y -r 30 -i \""+weekTemp+"image%08d.jpg\" -format rgb32 -s 2875x2160  -vcodec libx264 "
 
 day0 = datetime.date(2018,8,20)
 
