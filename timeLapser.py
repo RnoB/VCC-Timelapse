@@ -66,16 +66,15 @@ def fileNamer(year,month,day,hours,minutes):
 
 
 def dbFiller(today = False,tSleep = 7*60*60*24):
-    deltaDay = 0
+    deltaDay = 1
     while running:
         files = os.listdir(imagePath)
         fileDate = []
         for file  in files:
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
-        if today:
-            deltaDay += 1
 
+        deltaDay+=1
         for date in fileDate:
 
             if len(date) == 15:
@@ -144,7 +143,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                         
                             conn.commit()
                     conn.close()
-        time.sleep(tSleep)
+        #time.sleep(tSleep)
     print(fileDate)
 
 
