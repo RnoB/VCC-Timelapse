@@ -224,28 +224,28 @@ def monthlyVideo():
         months = np.unique(F)
 
         for month in months:
-            c.execute("Select * from video where month = ? and duration = ?",(month,'month'))
+            c.execute("Select * from video where month = ? and duration = ?",(int(month),'month'))
             F = c.fetchall()
             print(F)
             if len(F) == 0 and month<currentMonth:
                 step = 0
                 os.remove(monthVid+'*.jpg')
                 os.remove(monthVid+'*.mp4')
-                c.execute("Select dayRec from images where month = ?",(month,))
+                c.execute("Select dayRec from images where month = ?",(int(month),))
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
                 for day in days:
-                    c.execute("Select hours from images where dayRec = ?",(day,))
+                    c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
-                    c.execute("Select year from images where dayRec = ?",(day,))
+                    c.execute("Select year from images where dayRec = ?",(int(day),))
                     year = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(day,))
+                    c.execute("Select month from images where dayRec = ?",(int(day),))
                     month = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(day,))
+                    c.execute("Select month from images where dayRec = ?",(int(day),))
                     month = c.fetchall()[0]
                     for hour in hours:
-                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(day,hour))
+                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
                         F = c.fetchall()
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
@@ -254,9 +254,9 @@ def monthlyVideo():
                             copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                 videoName = 'month'+str(month).zfill(5)+'.mp4'
-                videoLine = ffmpeg + monthTemp+videoName
+                videoLine = ffmpegMonth + monthTemp+videoName
                 print(videoLine)
-                subprocess.call(videoLine)
+                subprocess.call(videoLine,shell=True)
                 copyfile(path,pather(monthVid,str(month).zfill(5)))
                 videoId = upload_video(path,title = "Month "+str(month))
                 values = [videoId,"month",year,month,dayRec,int(week)]
@@ -282,26 +282,26 @@ def everythingVideo():
         months = np.unique(F)
 
         for month in months:
-            c.execute("Select * from video where month = ? and duration = ?",(month,'everything'))
+            c.execute("Select * from video where month = ? and duration = ?",(int(month),'everything'))
             F = c.fetchall()
             print(F)
             if len(F) == 0 and month<currentMonth:
                 step = 0
                 os.remove(monthVid+'*.jpg')
                 os.remove(monthVid+'*.mp4')
-                c.execute("Select dayRec from images where month = ?",(month,))
+                c.execute("Select dayRec from images where month = ?",(int(month),))
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
                 for day in days:
-                    c.execute("Select hours from images where dayRec = ?",(day,))
+                    c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
-                    c.execute("Select year from images where dayRec = ?",(day,))
+                    c.execute("Select year from images where dayRec = ?",(int(day),))
                     year = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(day,))
+                    c.execute("Select month from images where dayRec = ?",(int(day),))
                     month = c.fetchall()[0]
                     for hour in hours:
-                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(day,hour))
+                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
                         F = c.fetchall()
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
@@ -310,10 +310,10 @@ def everythingVideo():
                             copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                 videoName = 'month'+str(month).zfill(5)+'.mp4'
-                videoLine = ffmpeg + monthTemp+videoName
+                videoLine = ffmpegEverything + everythingTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine)
-                copyfile(path,pather(monthVid,str(month).zfill(5)))
+                copyfile(path,pather(everythingVid,str(month).zfill(5)))
                 videoId = upload_video(path,title = "Everything up to Month "+str(month))
                 values = [videoId,"everything",year,month,dayRec,int(week)]
 
@@ -342,9 +342,9 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    #weekThread = threading.Thread(target=weeklyVideo)
-    #weekThread.daemon = True
-    #weekThread.start()
+    weekThread = threading.Thread(target=weeklyVideo)
+    weekThread.daemon = True
+    weekThread.start()
     # monthThread = threading.Thread(target=monthlyVideo)
     # monthThread.daemon = True
     # monthThread.start()
