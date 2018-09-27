@@ -66,6 +66,7 @@ def fileNamer(year,month,day,hours,minutes):
 
 
 def dbFiller(today = False,tSleep = 7*60*60*24):
+    print( ' -- Image Cropper Started -- ')
     deltaDay = 0
     while running:
         files = os.listdir(imagePath)
@@ -149,6 +150,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
 
 
 def weeklyVideo():
+    print( ' -- Weekly Video Started -- ')
     #tSleep = 25-dt.datetime.now().hour
     #print('sleeping for '+str(tSleep)+' hours')
     print('video')
@@ -163,7 +165,7 @@ def weeklyVideo():
         for week in weeks:
             c.execute("Select * from video where week = ? and duration = ?",(int(week),'week'))
             F = c.fetchall()
-            print(F)
+
             if len(F) == 0 and week<currentWeek:
                 step = 0
                 try:
@@ -182,7 +184,7 @@ def weeklyVideo():
                     hours = np.sort(np.unique(F))
                     c.execute("Select year from images where dayRec = ?",(int(day),))
                     year = c.fetchall()[0][0]
-                    print(year)
+
                     c.execute("Select month from images where dayRec = ?",(int(day),))
                     month = c.fetchall()[0][0]
                     c.execute("Select day from images where dayRec = ?",(int(day),))
