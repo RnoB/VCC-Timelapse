@@ -90,33 +90,35 @@ def dbFiller():
                             images.append(image)
                             times.append(exif['ExposureTime'][0]/exif['ExposureTime'][1])
                     if len(images)>0:
-                        times = np.array(times).astype(np.float32)
+                        if False
+                            times = np.array(times).astype(np.float32)
 
+                                
+
+                            alignMTB = cv2.createAlignMTB()
+                            alignMTB.process(images, images)
+                            calibrateDebevec = cv2.createCalibrateDebevec()
+
+                            responseDebevec = calibrateDebevec.process(images,times)
+                            # Merge images into an HDR linear image
+                            mergeDebevec = cv2.createMergeDebevec()
+                            hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
+
+                            tonemap1 = cv2.createTonemapDurand(gamma=2.2)
+                            res_debevec = tonemap1.process(hdrDebevec.copy())
+                            # Save HDR image.
+                            res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
+                            final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
+                            cv2.imwrite(fileNamer(year,month,day,hours,minutes), final_image)
                             
-
-                        alignMTB = cv2.createAlignMTB()
-                        alignMTB.process(images, images)
-                        calibrateDebevec = cv2.createCalibrateDebevec()
-
-                        responseDebevec = calibrateDebevec.process(images,times)
-                        # Merge images into an HDR linear image
-                        mergeDebevec = cv2.createMergeDebevec()
-                        hdrDebevec = mergeDebevec.process(images, times, responseDebevec)
-
-                        tonemap1 = cv2.createTonemapDurand(gamma=2.2)
-                        res_debevec = tonemap1.process(hdrDebevec.copy())
-                        # Save HDR image.
-                        res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                        final_image = cv2.resize(res_debevec_8bit,None,fx=2160.0/2464.0,fy=2160.0/2464.0)
-                        cv2.imwrite(fileNamer(year,month,day,hours,minutes), final_image)
                         iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
 
                         
                         day1 = datetime.date(int(year),int(month),int(day))
                         dayRec = (day1-day0).days
                         week = np.floor((day1-day0).days/7.0).astype(int)
-                        values = [year,month,day,hours,minutes,week,weekday,dayRec]
-
+                        values = [year,month,day,hours,minutes,int(week),weekday,dayRec]
+                        print(values)
                         c.execute("INSERT INTO images VALUES (?,?,?,?,?,?,?,?)",values)
                         print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
                     
