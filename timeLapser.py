@@ -74,7 +74,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
         if today:
-            deltaDay += -1
+            deltaDay += 1
 
         for date in fileDate:
 
@@ -83,8 +83,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                 month = date[5:7]
                 day = date[8:10]
                 todayDate = datetime.date.today()
-                if day>1:
-                    day=int(day)-deltaDay
+                todayDate += -datetime.timedelta(days=deltaDay)
                 day1 = datetime.date(int(year),int(month),int(day))
                 if (day1 == todayDate and today) or (day1!=todayDate and not today):
                     hours = date[11:13]
