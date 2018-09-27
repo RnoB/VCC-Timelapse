@@ -14,14 +14,19 @@ imagePath = '/timelapse/'
 hdrPath = '/timelapse/hdr/'
 weekTemp = '/timelapse/tmp/week/'
 monthTemp = '/timelapse/tmp/month/'
+everythingTemp = '/timelapse/tmp/everything/'
 weekVid = '/timelapse/video/week/'
 monthVid = '/timelapse/video/month/'
+everythingVid = '/timelapse/video/everything/'
 vccDb = '/home/timelapse/VCC-Timelapse/vccTimelapse.db'
 running = True
 
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
-
-ffmpegWeek = "ffmpeg -y -r 30 -i \""+weekTemp+"image%08d.jpg\" -format rgb32 -s 2875x2160  -vcodec libx264 "
+ffmpegBegin ="ffmpeg -y -r 30 -i \""
+ffmpegEnd = "image%08d.jpg\" -format rgb32 -s 2874x2160  -vcodec libx264 " 
+ffmpegWeek = ffmpegBegin+weekTemp+ffmpegEnd
+ffmpegMonth = ffmpegBegin+monthTemp+ffmpegEnd
+ffmpegEverything = ffmpegBegin+everythingTemp+ffmpegEnd
 
 day0 = datetime.date(2018,8,20)
 
@@ -119,7 +124,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                             res_debevec = tonemap1.process(hdrDebevec.copy())
                             # Save HDR image.
                             res_debevec_8bit = np.clip(res_debevec*255, 0, 255).astype('uint8')
-                            final_image = cv2.resize(res_debevec_8bit,None,fx=3280.0/2874.0,fy=2160.0/2464.0)
+                            final_image = cv2.resize(res_debevec_8bit,None,fx=2874.0/3280.0,fy=2160.0/2464.0)
                             cv2.imwrite(fileNamer(year,month,day,hours,minutes), final_image)
                                 
                             iYear,week,weekday = datetime.date(int(year),int(month),int(day)).isocalendar()
