@@ -167,12 +167,12 @@ def weeklyVideo():
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
                     c.execute("Select year from images where dayRec = ?",(int(day),))
-                    year = c.fetchall()[0]
+                    year = c.fetchall()[0][0]
                     print(year)
                     c.execute("Select month from images where dayRec = ?",(int(day),))
-                    month = c.fetchall()[0]
+                    month = c.fetchall()[0][0]
                     for hour in hours:
-                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
+                        c.execute("Select minutes from images where dayRec = ? and hours = ?",(int(day),int(hour)))
                         F = c.fetchall()
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
