@@ -67,7 +67,7 @@ def fileNamer(year,month,day,hours,minutes):
 
 def dbFiller(today = False,tSleep = 7*60*60*24,deltaStep = 0):
     print( ' -- Image Cropper Started -- ')
-    deltaDay = 0
+    deltaDay = deltaStep
     while running:
         files = os.listdir(imagePath)
         fileDate = []
@@ -75,7 +75,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24,deltaStep = 0):
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
         if today:
-            deltaDay +=deltaStep
+            deltaDay +=1
         for date in fileDate:
 
             if len(date) == 15:
@@ -294,6 +294,7 @@ def everythingVideo():
                 c.execute("Select dayRec from images where month = ?",(int(month),))
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
+                len(days)
                 for day in days:
                     c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
@@ -340,13 +341,13 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (False,7*24*60*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,1))
+    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,0))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,3))
+    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,8))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,5))
+    checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60,16))
     checkFilesThread.daemon = True
     checkFilesThread.start()
     #weekThread = threading.Thread(target=weeklyVideo)
