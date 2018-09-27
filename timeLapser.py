@@ -129,6 +129,7 @@ def dbFiller():
 def weeklyVideo():
     #tSleep = 25-dt.datetime.now().hour
     #print('sleeping for '+str(tSleep)+' hours')
+    print('video')
     while running:
         currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
         conn = sqlite3.connect(vccDb)
@@ -140,6 +141,7 @@ def weeklyVideo():
         for week in weeks:
             c.execute("Select * from video where week = ? and duration = ?",(week,'week'))
             F = c.fetchall()
+            print(F)
             if len(F) == 0 and week<currentWeek:
                 step = 0
                 os.remove(weekVid+'*.jpg')
@@ -186,7 +188,7 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller)
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    weekThread = threading.Thread(target=dbFiller)
+    weekThread = threading.Thread(target=weeklyVideo)
     weekThread.daemon = True
     weekThread.start()
     
