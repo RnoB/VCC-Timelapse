@@ -74,8 +74,8 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
         for file  in files:
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
-
-        deltaDay +=1
+        if today:
+            deltaDay +=1
         for date in fileDate:
 
             if len(date) == 15:
@@ -153,7 +153,7 @@ def weeklyVideo():
     print( ' -- Weekly Video Started -- ')
     #tSleep = 25-dt.datetime.now().hour
     #print('sleeping for '+str(tSleep)+' hours')
-    print('video')
+
     while running:
         currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
         conn = sqlite3.connect(vccDb)
@@ -182,13 +182,9 @@ def weeklyVideo():
                     c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
-                    c.execute("Select year from images where dayRec = ?",(int(day),))
-                    year = c.fetchall()[0][0]
+                    c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
+                    year,month,dayPic = c.fetchall()[0]
 
-                    c.execute("Select month from images where dayRec = ?",(int(day),))
-                    month = c.fetchall()[0][0]
-                    c.execute("Select day from images where dayRec = ?",(int(day),))
-                    dayPic = c.fetchall()[0][0]
                     for hour in hours:
                         c.execute("Select minutes from images where dayRec = ? and hours = ?",(int(day),int(hour)))
                         F = c.fetchall()
@@ -214,6 +210,8 @@ def weeklyVideo():
         time.sleep(24*3600)
 
 def monthlyVideo():
+    print( ' -- Monthly Video Started -- ')
+
     #tSleep = 26-dt.datetime.now().hour
     #print('sleeping for '+str(tSleep)+' hours')
     stepMonth = 2
@@ -243,12 +241,9 @@ def monthlyVideo():
                     c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
-                    c.execute("Select year from images where dayRec = ?",(int(day),))
-                    year = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(int(day),))
-                    month = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(int(day),))
-                    month = c.fetchall()[0]
+                    c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
+                    year,month,dayPic = c.fetchall()[0]
+
                     for hour in hours:
                         c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
                         F = c.fetchall()
@@ -303,10 +298,9 @@ def everythingVideo():
                     c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
-                    c.execute("Select year from images where dayRec = ?",(int(day),))
-                    year = c.fetchall()[0]
-                    c.execute("Select month from images where dayRec = ?",(int(day),))
-                    month = c.fetchall()[0]
+                    c.execute("Select year,month from images where dayRec = ?",(int(day),))
+                    year,month = c.fetchall()[0]
+
                     for hour in hours:
                         c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
                         F = c.fetchall()
@@ -316,11 +310,11 @@ def everythingVideo():
 
                             copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
-                videoName = 'month'+str(month).zfill(5)+'.mp4'
+                videoName = 'month_'+str(year)+'-'+str(month).zfill(4)+'.mp4'
                 videoLine = ffmpegEverything + everythingTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine)
-                copyfile(path,pather(everythingVid,str(month).zfill(5)))
+                copyfile(path,pather(everythingVid,str(year)+'-'+str(month).zfill(4))+str(videoName))
                 videoId = upload_video(path,title = "Everything up to Month "+str(month))
                 values = [videoId,"everything",year,month,dayRec,int(week)]
 
