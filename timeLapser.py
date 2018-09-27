@@ -157,7 +157,7 @@ def weeklyVideo():
                     os.remove(weekVid+'*.mp4')
                 except:
                     pass
-                c.execute("Select dayRec from images where week = ?",(week,))
+                c.execute("Select dayRec from images where week = ?",(int(week),))
                 F = c.fetchall()
                 print(F)
                 days = np.sort(np.unique(F))
