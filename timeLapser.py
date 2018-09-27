@@ -22,7 +22,7 @@ vccDb = '/home/timelapse/VCC-Timelapse/vccTimelapse.db'
 running = True
 
 evs = ['_ev_-10','_ev_-5','','_ev_5','_ev_10']
-ffmpegBegin ="ffmpeg -y -r 30 -i \""
+ffmpegBegin ="ffmpeg -y -r 60 -i \""
 ffmpegEnd = "image%08d.jpg\" -format rgb32 -s 2874x2160  -vcodec libx264 " 
 ffmpegWeek = ffmpegBegin+weekTemp+ffmpegEnd
 ffmpegMonth = ffmpegBegin+monthTemp+ffmpegEnd
