@@ -43,7 +43,7 @@ def firstGenDb():
 def pather(path,expId):
     if not os.path.exists(path):
         os.makedirs(path)
-    path = path  + expId+ '\\'
+    path = path  + expId+ '/'
     if not os.path.exists(path):
         os.makedirs(path)
     
