@@ -50,6 +50,11 @@ def pather(path,expId):
     return path
 
 def fileNamer(year,month,day,hours,minutes):
+    year = str(year)
+    month = str(month).zfill(2)
+    day = str(day).zfill(2)
+    hours = str(hours).zfill(2)
+    minutes = str(minutes).zfill(2)
     return hdrPath+year+'-'+month+'-'+day+'_'+hours+minutes+'.jpg'
 
 
