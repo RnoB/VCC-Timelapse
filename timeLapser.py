@@ -179,7 +179,7 @@ def weeklyVideo():
                             copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                 videoName = 'week'+str(week).zfill(5)+'.mp4'
-                videoLine = ffmpeg + weekTemp+videoName
+                videoLine = ffmpegWeek + weekTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine)
                 copyfile(path,pather(weekVid,str(week).zfill(5)))
