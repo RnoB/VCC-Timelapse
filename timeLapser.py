@@ -66,12 +66,16 @@ def fileNamer(year,month,day,hours,minutes):
 
 
 def dbFiller(today = False,tSleep = 7*60*60*24):
+    deltaDay = 0
     while running:
         files = os.listdir(imagePath)
         fileDate = []
         for file  in files:
             fileDate.append(file[0:15])
         fileDate = np.unique(fileDate)
+
+        deltaDay += -1
+
         for date in fileDate:
 
             if len(date) == 15:
@@ -79,7 +83,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
                 month = date[5:7]
                 day = date[8:10]
                 todayDate = datetime.date.today()
-                day1 = datetime.date(int(year),int(month),int(day))
+                day1 = datetime.date(int(year),int(month),int(day-deltaDay))
                 if (day1 == todayDate and today) or (day1!=todayDate and not today):
                     hours = date[11:13]
                     minutes = date[13:15]
@@ -338,9 +342,9 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    weekThread = threading.Thread(target=weeklyVideo)
-    weekThread.daemon = True
-    weekThread.start()
+    #weekThread = threading.Thread(target=weeklyVideo)
+    #weekThread.daemon = True
+    #weekThread.start()
     # monthThread = threading.Thread(target=monthlyVideo)
     # monthThread.daemon = True
     # monthThread.start()
