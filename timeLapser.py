@@ -236,6 +236,7 @@ def monthlyVideo():
                     os.remove(monthVid+'*.jpg')
                     os.remove(monthVid+'*.mp4')
                 except:
+                    pass
                 c.execute("Select dayRec from images where  year = ? and month = ?",month)
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
