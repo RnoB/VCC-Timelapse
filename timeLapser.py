@@ -265,7 +265,7 @@ def monthlyVideo():
                 subprocess.call(videoLine,shell=True)
                 copyfile(monthTemp+videoName,pather(monthVid,str(month[0])+'_'+str(month[1]).zfill(5))+videoName)
                 videoId = upload_video(monthTemp+videoName,title = "Month "+str(month))
-                values = [videoId,"month",year,month,day,int(week)]
+                values = [videoId,"month",int(month[0]),int(month[1]),day,int(week)]
 
                 c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
                 print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
