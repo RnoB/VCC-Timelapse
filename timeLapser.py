@@ -264,7 +264,7 @@ def monthlyVideo():
                 print(videoLine)
                 subprocess.call(videoLine,shell=True)
                 copyfile(weekTemp+videoName,pather(monthVid,str(month[0])+'_'+str(month[1]).zfill(5))+videoName)
-                videoId = upload_video(weekTemp+videoName,title = "Month "+str(month))
+                videoId = upload_video(monthTemp+videoName,title = "Month "+str(month))
                 values = [videoId,"month",year,month,day,int(week)]
 
                 c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
