@@ -234,8 +234,8 @@ def monthlyVideo():
                 step = 0
                 image = 0   
                 try:
-                    os.remove(monthVid+'*.jpg')
-                    os.remove(monthVid+'*.mp4')
+                    os.remove(monthTemp+'*.jpg')
+                    os.remove(monthTemp+'*.mp4')
                 except:
                     pass
                 c.execute("Select dayRec from images where  year = ? and month = ?",month)
@@ -257,7 +257,7 @@ def monthlyVideo():
                                 path = fileNamer(int(month[0]),int(month[1]),dayPic,hour,minute)
                                 print(path)
                                 copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
-                                step = step+stepMonth
+                                step = step+1
                             image=image+1
                 videoName = 'month_'+str(month[0])+'_'+str(month[1]).zfill(5)+'.mp4'
                 videoLine = ffmpegMonth + monthTemp+videoName
