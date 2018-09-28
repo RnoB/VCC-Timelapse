@@ -164,7 +164,7 @@ def weeklyVideo():
             F = c.fetchall()
 
             if len(F) == 0 and week<currentWeek:
-                print('starting video week : 'str(week))
+                print('starting video week : '+str(week))
                 print(currentWeek)
                 step = 0
                 try:
