@@ -259,7 +259,7 @@ def monthlyVideo():
                                 copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                                 step = step+stepMonth
                             image=image+1
-                videoName = 'month'+str(month).zfill(5)+'.mp4'
+                videoName = 'month_'+str(month[0])+'_'+str(month[1]).zfill(5)+'.mp4'
                 videoLine = ffmpegMonth + monthTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine,shell=True)
