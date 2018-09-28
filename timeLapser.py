@@ -245,6 +245,8 @@ def monthlyVideo():
                     c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
+                    c.execute("Select day from images where dayRec = ?",(int(day),))
+                    dayPic = c.fetchall()[0]
 
                     for hour in hours:
                         c.execute("Select minutes from images where dayRec = ? and hours = ?",(int(day),int(hour)))
@@ -252,8 +254,8 @@ def monthlyVideo():
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
                             if image%stepMonth == 0:
-                                path = fileNamer(int(month[0]),int(month[1]),day,hour,minute)
-
+                                path = fileNamer(int(month[0]),int(month[1]),dayPic,hour,minute)
+                                print(path)
                                 copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                                 step = step+stepMonth
                             image=image+1
