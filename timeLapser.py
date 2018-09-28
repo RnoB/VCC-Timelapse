@@ -164,8 +164,7 @@ def weeklyVideo():
             F = c.fetchall()
 
             if len(F) == 0 and week<currentWeek:
-                print('starting video week : '+str(week))
-                print(currentWeek)
+
                 step = 0
                 try:
                     os.remove(weekTemp+'*.jpg')
@@ -176,12 +175,12 @@ def weeklyVideo():
                 F = c.fetchall()
 
                 days = np.sort(np.unique(F))
-                print(days)
+         
                 for day in days:
                     c.execute("Select hours,minutes from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(F)
-                    print(hours)
+                    
                     c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
                     year,month,dayPic = c.fetchall()[0]
 
@@ -230,7 +229,7 @@ def monthlyVideo():
         for month in months:
             c.execute("Select * from video where year = ? and month = ? and duration = ?",(int(month[0]),int(month[1]),'month'))
             F = c.fetchall()
-            print(F)
+
             if len(F) == 0 and month != (currentYear,currentMonth):
                 step = 0
                 image = 0   
@@ -258,7 +257,7 @@ def monthlyVideo():
                                 path = fileNamer(year,month,day,hour,minute)
 
                                 copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
-                                step = step+1
+                                step = step+stepMonth
                             image=image+1
                 videoName = 'month'+str(month).zfill(5)+'.mp4'
                 videoLine = ffmpegMonth + monthTemp+videoName
@@ -353,10 +352,10 @@ def main():
     #checkFilesThread.start()
     weekThread = threading.Thread(target=weeklyVideo)
     weekThread.daemon = True
-    weekThread.start()
-    # monthThread = threading.Thread(target=monthlyVideo)
-    # monthThread.daemon = True
-    # monthThread.start()
+    #weekThread.start()
+    monthThread = threading.Thread(target=monthlyVideo)
+    monthThread.daemon = True
+    monthThread.start()
     # everythingThread = threading.Thread(target=everythingVideo)
     # everythingThread.daemon = True
     # everythingThread.start()
