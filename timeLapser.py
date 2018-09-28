@@ -282,6 +282,7 @@ def everythingVideo():
     print('video')
     while running:
         image = 0
+        step = 0
         todayDate = datetime.date.today()
         dayRecToday = (todayDate-day0).days
         conn = sqlite3.connect(vccDb)
