@@ -180,7 +180,7 @@ def weeklyVideo():
                 for day in days:
                     c.execute("Select hours,minutes from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
-                    hours = np.sort(np.unique(F))
+                    hours = np.sort(F)
                     print(hours)
                     c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
                     year,month,dayPic = c.fetchall()[0]
