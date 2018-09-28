@@ -246,7 +246,7 @@ def monthlyVideo():
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
                     c.execute("Select day from images where dayRec = ?",(int(day),))
-                    dayPic = c.fetchall()[0]
+                    dayPic = c.fetchall()[0][0]
 
                     for hour in hours:
                         c.execute("Select minutes from images where dayRec = ? and hours = ?",(int(day),int(hour)))
