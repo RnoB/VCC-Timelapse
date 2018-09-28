@@ -196,12 +196,12 @@ def weeklyVideo():
                 videoLine = ffmpegWeek + weekTemp+videoName
                 print(videoLine)
                 #subprocess.call(videoLine,shell=True)
-                copyfile(path,pather(weekVid,str(week).zfill(5))+videoName)
-                print(path)
+                copyfile(weekTemp+videoName,pather(weekVid,str(week).zfill(5))+videoName)
+                print(weekTemp+videoName)
                 videoId = upload_video(path,title = "Week "+str(week))
                 values = [videoId,"week",year,month,day,int(week)]
 
-                #c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
+                c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
                 print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
             
                 conn.commit()
