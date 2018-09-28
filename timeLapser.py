@@ -159,13 +159,13 @@ def weeklyVideo():
         c.execute("Select week from images")
         F = c.fetchall()
         weeks = np.unique(F)
-        print(weeks)
-        print(currentWeek)
         for week in weeks:
             c.execute("Select * from video where week = ? and duration = ?",(int(week),'week'))
             F = c.fetchall()
 
             if len(F) == 0 and week<currentWeek:
+                print('starting video week : 'str(week))
+                print(currentWeek)
                 step = 0
                 try:
                     os.remove(weekTemp+'*.jpg')
