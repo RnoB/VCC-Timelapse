@@ -302,8 +302,8 @@ def everythingVideo():
                 c.execute("Select hours from images where dayRec = ?",(int(day),))
                 F = c.fetchall()
                 hours = np.sort(np.unique(F))
-                c.execute("Select year,month from images where dayRec = ?",(int(day),))
-                year,month = c.fetchall()[0]
+                c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
+                year,month,dayPic = c.fetchall()[0]
 
                 for hour in hours:
                     c.execute("Select minutes from images where dayRec = ? and hours = ?",(int(day),int(hour)))
@@ -311,7 +311,7 @@ def everythingVideo():
                     minutes = np.sort(np.unique(F))
                     for minute in minutes:
                         if image%stepEverything == 0:
-                            path = fileNamer(year,month,day,hour,minute)
+                            path = fileNamer(year,month,dayPic,hour,minute)
 
                             copyfile(path, everythingTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
