@@ -198,10 +198,10 @@ def weeklyVideo():
                 #subprocess.call(videoLine,shell=True)
                 copyfile(weekTemp+videoName,pather(weekVid,str(week).zfill(5))+videoName)
                 print(weekTemp+videoName)
-                videoId = upload_video(path,title = "Week "+str(week))
+                videoId = upload_video(weekTemp+videoName,title = "Week "+str(week))
                 values = [videoId,"week",year,month,day,int(week)]
 
-                c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
+                c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
                 print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
             
                 conn.commit()
