@@ -312,7 +312,7 @@ def everythingVideo():
                     for minute in minutes:
                         if image%stepEverything == 0:
                             path = fileNamer(year,month,dayPic,hour,minute)
-
+                            print(path)
                             copyfile(path, everythingTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                         image=image+1
