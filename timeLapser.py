@@ -324,7 +324,7 @@ def everythingVideo():
         videoId = upload_video(everythingTemp+videoName,title = "Everything up to "+str(todayDate))
         values = [videoId,"everything",todayDate.year,todayDate.month,todayDate.day,0]
 
-        c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
+        c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
     
         conn.commit()
         conn.close()
