@@ -207,8 +207,8 @@ def weeklyVideo():
             
                 conn.commit()
         conn.close()
-        time.sleep(tSleep)
-        tSleep = 24
+        time.sleep(24)
+        
 
 def monthlyVideo():
     print( ' -- Monthly Video Started -- ')
@@ -272,8 +272,8 @@ def monthlyVideo():
             
                 conn.commit()
         conn.close()
-        time.sleep(tSleep*3600)
-        tSleep = 24
+        time.sleep(24)
+
 
 
 def everythingVideo():
@@ -319,7 +319,7 @@ def everythingVideo():
         videoName = 'everything_'+str(todayDate.year)+'-'+str(todayDate.month).zfill(4)+'-'+str(todayDate.day).zfill(4)+'.mp4'
         videoLine = ffmpegEverything + everythingTemp+videoName
         print(videoLine)
-        subprocess.call(videoLine)
+        subprocess.call(videoLine,shell = True)
         copyfile(everythingTemp+videoName,pather(everythingVid,str(todayDate.year)+'-'+str(todayDate.month).zfill(4)+'-'+str(todayDate.day).zfill(4))+videoName)
         videoId = upload_video(everythingTemp+videoName,title = "Everything up to "+str(todayDate))
         values = [videoId,"everything",todayDate.year,todayDate.month,todayDate.day,0]
@@ -328,7 +328,7 @@ def everythingVideo():
     
         conn.commit()
         conn.close()
-        time.sleep(24*3600)
+        time.sleep(3*24*3600)
 
 
 
