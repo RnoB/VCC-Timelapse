@@ -305,7 +305,7 @@ def everythingVideo():
                 year,month = c.fetchall()[0]
 
                 for hour in hours:
-                    c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
+                    c.execute("Select minutes from images where dayRec = ? and hours = ?",(int(day),int(hour)))
                     F = c.fetchall()
                     minutes = np.sort(np.unique(F))
                     for minute in minutes:
