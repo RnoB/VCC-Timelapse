@@ -167,8 +167,8 @@ def weeklyVideo():
             if len(F) == 0 and week<currentWeek:
                 step = 0
                 try:
-                    os.remove(weekVid+'*.jpg')
-                    os.remove(weekVid+'*.mp4')
+                    os.remove(weekTemp+'*.jpg')
+                    os.remove(weekTemp+'*.mp4')
                 except:
                     pass
                 c.execute("Select dayRec from images where week = ?",(int(week),))
@@ -198,11 +198,11 @@ def weeklyVideo():
                 #subprocess.call(videoLine,shell=True)
                 copyfile(weekTemp+videoName,pather(weekVid,str(week).zfill(5))+videoName)
                 print(weekTemp+videoName)
-                videoId = upload_video(weekTemp+videoName,title = "Week "+str(week))
+                #videoId = upload_video(weekTemp+videoName,title = "Week "+str(week))
+                videoId =''
                 values = [videoId,"week",year,month,day,int(week)]
 
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
-                print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
             
                 conn.commit()
         conn.close()
@@ -232,8 +232,10 @@ def monthlyVideo():
             if len(F) == 0 and month != (currentYear,currentMonth):
                 step = 0
                 image = 0   
-                os.remove(monthVid+'*.jpg')
-                os.remove(monthVid+'*.mp4')
+                try:
+                    os.remove(monthVid+'*.jpg')
+                    os.remove(monthVid+'*.mp4')
+                except:
                 c.execute("Select dayRec from images where  year = ? and month = ?",month)
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
@@ -261,7 +263,7 @@ def monthlyVideo():
                 subprocess.call(videoLine,shell=True)
                 copyfile(path,pather(monthVid,str(month).zfill(5)))
                 videoId = upload_video(path,title = "Month "+str(month))
-                values = [videoId,"month",year,month,dayRec,int(week)]
+                values = [videoId,"month",year,month,day,int(week)]
 
                 c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
                 print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
