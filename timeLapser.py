@@ -254,7 +254,7 @@ def monthlyVideo():
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
                             if image%stepMonth == 0:
-                                path = fileNamer(year,month,day,hour,minute)
+                                path = fileNamer(month[0],month[1],day,hour,minute)
 
                                 copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                                 step = step+stepMonth
