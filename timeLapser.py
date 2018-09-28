@@ -28,7 +28,7 @@ ffmpegWeek = ffmpegBegin+weekTemp+ffmpegEnd
 ffmpegMonth = ffmpegBegin+monthTemp+ffmpegEnd
 ffmpegEverything = ffmpegBegin+everythingTemp+ffmpegEnd
 
-day0 = datetime.date(2018,8,20)
+day0 = datetime.date(2018,3,8)
 
 def firstGenDb():
 
@@ -217,22 +217,23 @@ def monthlyVideo():
     print('video')
     while running:
         currentMonth = datetime.date.today().month
+        currentYear = datetime.date.today().year
         conn = sqlite3.connect(vccDb)
         c = conn.cursor()
-        c.execute("Select month from images")
+        c.execute("Select (year,month) from images")
         F = c.fetchall()
         months = np.unique(F)
 
         for month in months:
-            c.execute("Select * from video where month = ? and duration = ?",(int(month),'month'))
+            c.execute("Select * from video where year = ? and month = ? and duration = ?",(int(month[0]),int(month[1]),'month'))
             F = c.fetchall()
             print(F)
-            if len(F) == 0 and month<currentMonth:
+            if len(F) == 0 and month != (currentYear,currentMonth):
                 step = 0
                 image = 0   
                 os.remove(monthVid+'*.jpg')
                 os.remove(monthVid+'*.mp4')
-                c.execute("Select dayRec from images where month = ?",(int(month),))
+                c.execute("Select dayRec from images where  year = ? and month = ?",month)
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
                 for day in days:
@@ -280,7 +281,7 @@ def everythingVideo():
         c.execute("Select month from images")
         F = c.fetchall()
         months = np.unique(F)
-
+        image = 0
         for month in months:
             c.execute("Select * from video where month = ? and duration = ?",(int(month),'everything'))
             F = c.fetchall()
@@ -305,10 +306,12 @@ def everythingVideo():
                         F = c.fetchall()
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
-                            path = fileNamer(year,month,day,hour,minute)
+                            if image%stepMonth == 0:
+                                path = fileNamer(year,month,day,hour,minute)
 
-                            copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
-                            step = step+1
+                                copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
+                                step = step+1
+                            image=image+1
                 videoName = 'month_'+str(year)+'-'+str(month).zfill(4)+'.mp4'
                 videoLine = ffmpegEverything + everythingTemp+videoName
                 print(videoLine)
@@ -342,9 +345,9 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    #weekThread = threading.Thread(target=weeklyVideo)
-    #weekThread.daemon = True
-    #weekThread.start()
+    weekThread = threading.Thread(target=weeklyVideo)
+    weekThread.daemon = True
+    weekThread.start()
     # monthThread = threading.Thread(target=monthlyVideo)
     # monthThread.daemon = True
     # monthThread.start()
