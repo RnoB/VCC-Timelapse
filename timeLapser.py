@@ -281,7 +281,7 @@ def everythingVideo():
     #print('sleeping for '+str(tSleep)+' hours')
     print('video')
     while running:
-
+        image = 0
         todayDate = datetime.date.today()
         dayRecToday = (todayDate-day0).days
         conn = sqlite3.connect(vccDb)
