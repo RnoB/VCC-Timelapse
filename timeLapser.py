@@ -222,10 +222,10 @@ def monthlyVideo():
         currentYear = datetime.date.today().year
         conn = sqlite3.connect(vccDb)
         c = conn.cursor()
-        c.execute("Select (year,month) from images")
+        c.execute("Select year,month from images")
         F = c.fetchall()
-        months = np.unique(F)
-
+        months = list(set(F))
+        print(months)
         for month in months:
             c.execute("Select * from video where year = ? and month = ? and duration = ?",(int(month[0]),int(month[1]),'month'))
             F = c.fetchall()
