@@ -295,9 +295,7 @@ def everythingVideo():
         except:
             pass
 
-        stepEverything = int(len(days)/30.0)
-        if stepEverything == 0
-            stepEverything=1
+        stepEverything = int(np.ceil(len(days)/30.0))
         for day in days:
             if day !=dayRecToday
                 c.execute("Select hours from images where dayRec = ?",(int(day),))
