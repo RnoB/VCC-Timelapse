@@ -159,7 +159,8 @@ def weeklyVideo():
         c.execute("Select week from images")
         F = c.fetchall()
         weeks = np.unique(F)
-
+        print(weeks)
+        print(currentWeek)
         for week in weeks:
             c.execute("Select * from video where week = ? and duration = ?",(int(week),'week'))
             F = c.fetchall()
@@ -200,7 +201,7 @@ def weeklyVideo():
                 print(weekTemp+videoName)
                 #videoId = upload_video(weekTemp+videoName,title = "Week "+str(week))
                 videoId =''
-                values = [videoId,"week",year,month,day,int(week)]
+                values = [videoId,"week",year,month,int(day),int(week)]
 
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
             
