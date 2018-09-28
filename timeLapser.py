@@ -297,7 +297,7 @@ def everythingVideo():
 
         stepEverything = int(np.ceil(len(days)/30.0))
         for day in days:
-            if day !=dayRecToday
+            if day !=dayRecToday:
                 c.execute("Select hours from images where dayRec = ?",(int(day),))
                 F = c.fetchall()
                 hours = np.sort(np.unique(F))
