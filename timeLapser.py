@@ -149,8 +149,8 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
 
 def weeklyVideo():
     print( ' -- Weekly Video Started -- ')
-    #tSleep = 25-dt.datetime.now().hour
-    #print('sleeping for '+str(tSleep)+' hours')
+    tSleep = 25-dt.datetime.now().hour
+    print('sleeping for '+str(tSleep)+' hours')
 
     while running:
         currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
@@ -207,13 +207,14 @@ def weeklyVideo():
             
                 conn.commit()
         conn.close()
-        time.sleep(24*3600)
+        time.sleep(tSleep)
+        tSleep = 24
 
 def monthlyVideo():
     print( ' -- Monthly Video Started -- ')
 
-    #tSleep = 26-dt.datetime.now().hour
-    #print('sleeping for '+str(tSleep)+' hours')
+    tSleep = 26-dt.datetime.now().hour
+    print('sleeping for '+str(tSleep)+' hours')
     stepMonth = 2
 
     print('video')
@@ -271,7 +272,8 @@ def monthlyVideo():
             
                 conn.commit()
         conn.close()
-        time.sleep(24*3600)
+        time.sleep(tSleep*3600)
+        tSleep = 24
 
 
 def everythingVideo():
@@ -279,55 +281,53 @@ def everythingVideo():
     #print('sleeping for '+str(tSleep)+' hours')
     print('video')
     while running:
-        currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
+
+        todayDate = datetime.date.today()
+        dayRecToday = (todayDate-day0).days
         conn = sqlite3.connect(vccDb)
         c = conn.cursor()
-        c.execute("Select month from images")
+        c.execute("Select dayRec from images")
         F = c.fetchall()
-        months = np.unique(F)
-        image = 0
-        for month in months:
-            c.execute("Select * from video where month = ? and duration = ?",(int(month),'everything'))
-            F = c.fetchall()
-            print(F)
-            if len(F) == 0 and month<currentMonth:
-                step = 0
-                os.remove(monthVid+'*.jpg')
-                os.remove(monthVid+'*.mp4')
-                c.execute("Select dayRec from images where month = ?",(int(month),))
+        days = np.sort(np.unique(F))
+        try:
+            os.remove(everythingTemp+'*.jpg')
+            os.remove(everythingTemp+'*.mp4')
+        except:
+            pass
+
+        stepEverything = int(len(days)/30.0)
+        if stepEverything == 0
+            stepEverything=1
+        for day in days:
+            if day !=dayRecToday
+                c.execute("Select hours from images where dayRec = ?",(int(day),))
                 F = c.fetchall()
-                days = np.sort(np.unique(F))
-                len(days)
-                for day in days:
-                    c.execute("Select hours from images where dayRec = ?",(int(day),))
+                hours = np.sort(np.unique(F))
+                c.execute("Select year,month from images where dayRec = ?",(int(day),))
+                year,month = c.fetchall()[0]
+
+                for hour in hours:
+                    c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
                     F = c.fetchall()
-                    hours = np.sort(np.unique(F))
-                    c.execute("Select year,month from images where dayRec = ?",(int(day),))
-                    year,month = c.fetchall()[0]
+                    minutes = np.sort(np.unique(F))
+                    for minute in minutes:
+                        if image%stepEverything == 0:
+                            path = fileNamer(year,month,day,hour,minute)
 
-                    for hour in hours:
-                        c.execute("Select minutes from images where dayRec = ? and hour = ?",(int(day),int(hour)))
-                        F = c.fetchall()
-                        minutes = np.sort(np.unique(F))
-                        for minute in minutes:
-                            if image%stepMonth == 0:
-                                path = fileNamer(year,month,day,hour,minute)
+                            copyfile(path, everythingTemp + 'image'+str(step).zfill(8)+'.jpg')
+                            step = step+1
+                        image=image+1
+        videoName = 'everything_'+str(todayDate.year)+'-'+str(todayDate.month).zfill(4)+'-'+str(todayDate.day).zfill(4)+'.mp4'
+        videoLine = ffmpegEverything + everythingTemp+videoName
+        print(videoLine)
+        subprocess.call(videoLine)
+        copyfile(everythingTemp+videoName,pather(everythingVid,str(todayDate.year)+'-'+str(todayDate.month).zfill(4)+'-'+str(todayDate.day).zfill(4))+videoName)
+        videoId = upload_video(everythingTemp+videoName,title = "Everything up to "+str(todayDate))
+        values = [videoId,"everything",todayDate.year,todayDate.month,todayDate.day,0]
 
-                                copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
-                                step = step+1
-                            image=image+1
-                videoName = 'month_'+str(year)+'-'+str(month).zfill(4)+'.mp4'
-                videoLine = ffmpegEverything + everythingTemp+videoName
-                print(videoLine)
-                subprocess.call(videoLine)
-                copyfile(path,pather(everythingVid,str(year)+'-'+str(month).zfill(4))+str(videoName))
-                videoId = upload_video(path,title = "Everything up to Month "+str(month))
-                values = [videoId,"everything",year,month,dayRec,int(week)]
-
-                c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
-                print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
-            
-                conn.commit()
+        c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
+    
+        conn.commit()
         conn.close()
         time.sleep(24*3600)
 
@@ -352,12 +352,12 @@ def main():
     weekThread = threading.Thread(target=weeklyVideo)
     weekThread.daemon = True
     #weekThread.start()
-    monthThread = threading.Thread(target=monthlyVideo)
-    monthThread.daemon = True
-    monthThread.start()
-    # everythingThread = threading.Thread(target=everythingVideo)
-    # everythingThread.daemon = True
-    # everythingThread.start()
+    #monthThread = threading.Thread(target=monthlyVideo)
+    #monthThread.daemon = True
+    #monthThread.start()
+    everythingThread = threading.Thread(target=everythingVideo)
+    everythingThread.daemon = True
+    everythingThread.start()
     
     print('nothing')
     t0 =time.time()
