@@ -178,9 +178,10 @@ def weeklyVideo():
                 days = np.sort(np.unique(F))
                 print(days)
                 for day in days:
-                    c.execute("Select hours from images where dayRec = ?",(int(day),))
+                    c.execute("Select hours,minutes from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(np.unique(F))
+                    print(hours)
                     c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
                     year,month,dayPic = c.fetchall()[0]
 
@@ -190,7 +191,7 @@ def weeklyVideo():
                         minutes = np.sort(np.unique(F))
                         for minute in minutes:
                             path = fileNamer(year,month,dayPic,hour,minute)
-                            print(path)
+                            
                             copyfile(path, weekTemp + 'image'+str(step).zfill(8)+'.jpg')
                             step = step+1
                 videoName = 'week'+str(week).zfill(5)+'.mp4'
