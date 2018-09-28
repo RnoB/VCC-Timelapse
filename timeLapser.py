@@ -149,9 +149,6 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
 
 def weeklyVideo():
     print( ' -- Weekly Video Started -- ')
-    tSleep = 25-dt.datetime.now().hour
-    print('sleeping for '+str(tSleep)+' hours')
-
     while running:
         currentWeek = np.floor((datetime.date.today()-day0).days/7.0).astype(int)
         conn = sqlite3.connect(vccDb)
@@ -207,13 +204,20 @@ def weeklyVideo():
             
                 conn.commit()
         conn.close()
-        time.sleep(24)
+        tSleep = 25-dt.datetime.now().hour+7*24
+        print('sleeping for '+str(tSleep)+' hours')
+        try:
+            os.remove(weekTemp+'*.jpg')
+            os.remove(weekTemp+'*.mp4')
+        except:
+            pass
+        time.sleep(tSleep)
         
 
 def monthlyVideo():
     print( ' -- Monthly Video Started -- ')
 
-    tSleep = 26-dt.datetime.now().hour
+
     print('sleeping for '+str(tSleep)+' hours')
     stepMonth = 2
 
@@ -260,19 +264,25 @@ def monthlyVideo():
                                 copyfile(path, monthTemp + 'image'+str(step).zfill(8)+'.jpg')
                                 step = step+1
                             image=image+1
-                videoName = 'month_'+str(month[0])+'_'+str(month[1]).zfill(5)+'.mp4'
+                videoName = 'month_'+str(month[0])+'_'+str(month[1]).zfill(2)+'.mp4'
                 videoLine = ffmpegMonth + monthTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine,shell=True)
-                copyfile(monthTemp+videoName,pather(monthVid,str(month[0])+'_'+str(month[1]).zfill(5))+videoName)
+                copyfile(monthTemp+videoName,pather(monthVid,str(month[0])+'_'+str(month[1]).zfill(2))+videoName)
                 videoId = upload_video(monthTemp+videoName,title = "Month "+str(month))
                 values = [videoId,"month",int(month[0]),int(month[1]),day,0]
 
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
             
                 conn.commit()
-        conn.close()
-        time.sleep(24)
+        conn.close()   
+        try:
+            os.remove(monthTemp+'*.jpg')
+            os.remove(monthTemp+'*.mp4')
+        except:
+            pass
+        tSleep = 26-dt.datetime.now().hour
+        time.sleep(tSleep)
 
 
 
@@ -328,6 +338,11 @@ def everythingVideo():
     
         conn.commit()
         conn.close()
+        try:
+            os.remove(everythingTemp+'*.jpg')
+            os.remove(everythingTemp+'*.mp4')
+        except:
+            pass
         time.sleep(3*24*3600)
 
 
@@ -344,19 +359,19 @@ def main():
         firstGenDb()
     checkFilesThread = threading.Thread(target=dbFiller,args = (False,7*24*60*60))
     checkFilesThread.daemon = True
-    #checkFilesThread.start()
+    checkFilesThread.start()
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
-    #checkFilesThread.start()
-    weekThread = threading.Thread(target=weeklyVideo)
-    weekThread.daemon = True
+    checkFilesThread.start()
+    #weekThread = threading.Thread(target=weeklyVideo)
+    #weekThread.daemon = True
     #weekThread.start()
     #monthThread = threading.Thread(target=monthlyVideo)
     #monthThread.daemon = True
     #monthThread.start()
-    everythingThread = threading.Thread(target=everythingVideo)
-    everythingThread.daemon = True
-    everythingThread.start()
+    #everythingThread = threading.Thread(target=everythingVideo)
+    #everythingThread.daemon = True
+    #everythingThread.start()
     
     print('nothing')
     t0 =time.time()
