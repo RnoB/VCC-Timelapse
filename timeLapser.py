@@ -267,7 +267,7 @@ def monthlyVideo():
                 videoId = upload_video(monthTemp+videoName,title = "Month "+str(month))
                 values = [videoId,"month",int(month[0]),int(month[1]),day,0]
 
-                c.execute("INSERT INTO images VALUES (?,?,?,?,?,?)",values)
+                c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
                 print(year+' '+month+' '+day+' '+hours+':'+minutes + ' week : '+str(week) + ' day : '+str(weekday) +' dayRec : '+str(dayRec))
             
                 conn.commit()
