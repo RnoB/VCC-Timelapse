@@ -341,10 +341,10 @@ def main():
         firstGenDb()
     checkFilesThread = threading.Thread(target=dbFiller,args = (False,7*24*60*60))
     checkFilesThread.daemon = True
-    checkFilesThread.start()
+    #checkFilesThread.start()
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
-    checkFilesThread.start()
+    #checkFilesThread.start()
     weekThread = threading.Thread(target=weeklyVideo)
     weekThread.daemon = True
     weekThread.start()
