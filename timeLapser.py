@@ -263,7 +263,7 @@ def monthlyVideo():
                 videoLine = ffmpegMonth + monthTemp+videoName
                 print(videoLine)
                 subprocess.call(videoLine,shell=True)
-                copyfile(path,pather(monthVid,str(month).zfill(5)))
+                copyfile(path,pather(monthVid,str(month[0])+'_'+str(month[1]).zfill(5)))
                 videoId = upload_video(path,title = "Month "+str(month))
                 values = [videoId,"month",year,month,day,int(week)]
 
