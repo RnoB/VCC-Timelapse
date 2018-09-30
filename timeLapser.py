@@ -163,11 +163,9 @@ def weeklyVideo():
             if len(F) == 0 and week<currentWeek:
 
                 step = 0
-                try:
-                    os.remove(weekTemp+'*.jpg')
-                    os.remove(weekTemp+'*.mp4')
-                except:
-                    pass
+                
+                os.remove(weekTemp+'*.jpg')
+                os.remove(weekTemp+'*.mp4')
                 c.execute("Select dayRec from images where week = ?",(int(week),))
                 F = c.fetchall()
 
