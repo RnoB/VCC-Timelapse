@@ -163,7 +163,7 @@ def weeklyVideo():
             if len(F) == 0 and week<currentWeek:
 
                 step = 0
-                for f in os.listdir(weekTemp)
+                for f in os.listdir(weekTemp):
                     os.remove(os.path.join(weekTemp, f))
                 c.execute("Select dayRec from images where week = ?",(int(week),))
                 F = c.fetchall()
@@ -202,7 +202,7 @@ def weeklyVideo():
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
             
                 conn.commit()
-                for f in os.listdir(weekTemp)
+                for f in os.listdir(weekTemp):
                     os.remove(os.path.join(weekTemp, f))
         conn.close()
         tSleep = 25-dt.datetime.now().hour+7*24
@@ -237,7 +237,7 @@ def monthlyVideo():
                 step = 0
                 image = 0   
                 
-                for f in os.listdir(monthTemp)
+                for f in os.listdir(monthTemp):
                     os.remove(os.path.join(monthTemp, f))
                 c.execute("Select dayRec from images where  year = ? and month = ?",month)
                 F = c.fetchall()
@@ -271,7 +271,7 @@ def monthlyVideo():
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
             
                 conn.commit()
-                for f in os.listdir(monthTemp)
+                for f in os.listdir(monthTemp):
                     os.remove(os.path.join(monthTemp, f))
         conn.close()   
         try:
