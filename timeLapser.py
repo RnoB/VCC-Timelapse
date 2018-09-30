@@ -195,10 +195,10 @@ def weeklyVideo():
                 videoName = 'week'+str(week).zfill(5)+'.mp4'
                 videoLine = ffmpegWeek + weekTemp+videoName
                 print(videoLine)
-                #subprocess.call(videoLine,shell=True)
+                subprocess.call(videoLine,shell=True)
                 copyfile(weekTemp+videoName,pather(weekVid,str(week).zfill(5))+videoName)
                 print(weekTemp+videoName)
-                #videoId = upload_video(weekTemp+videoName,title = "Week "+str(week))
+                videoId = upload_video(weekTemp+videoName,title = "Week "+str(week))
                 videoId =''
                 values = [videoId,"week",year,month,int(day),int(week)]
 
