@@ -298,7 +298,7 @@ def everythingVideo():
         c.execute("Select dayRec from images")
         F = c.fetchall()
         days = np.sort(np.unique(F))
-        for f in os.listdir(everythingTemp)
+        for f in os.listdir(everythingTemp):
             os.remove(os.path.join(everythingTemp, f))
 
         stepEverything = int(np.ceil(len(days)/30.0))
@@ -334,7 +334,7 @@ def everythingVideo():
     
         conn.commit()
         conn.close()
-        for f in os.listdir(everythingTemp)
+        for f in os.listdir(everythingTemp):
             os.remove(os.path.join(everythingTemp, f))
         time.sleep(3*24*3600)
 
