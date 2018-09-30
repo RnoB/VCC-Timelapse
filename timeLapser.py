@@ -306,7 +306,7 @@ def everythingVideo():
             pass
 
         stepEverything = int(np.ceil(len(days)/30.0))
-        print(days)
+
         for day in days:
             if day !=dayRecToday:
                 c.execute("Select hours from images where dayRec = ?",(int(day),))
@@ -363,12 +363,12 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    #weekThread = threading.Thread(target=weeklyVideo)
-    #weekThread.daemon = True
-    #weekThread.start()
-    #monthThread = threading.Thread(target=monthlyVideo)
-    #monthThread.daemon = True
-    #monthThread.start()
+    weekThread = threading.Thread(target=weeklyVideo)
+    weekThread.daemon = True
+    weekThread.start()
+    monthThread = threading.Thread(target=monthlyVideo)
+    monthThread.daemon = True
+    monthThread.start()
     everythingThread = threading.Thread(target=everythingVideo)
     everythingThread.daemon = True
     everythingThread.start()
