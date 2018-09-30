@@ -76,7 +76,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
         fileDate = np.unique(fileDate)
 
         for date in fileDate:
-            print(date)
+
             if len(date) == 15 and date[0] == '2':
                 year = date[0:4]
                 month = date[5:7]
@@ -363,15 +363,15 @@ def main():
     checkFilesThread = threading.Thread(target=dbFiller,args = (True,5*60))
     checkFilesThread.daemon = True
     checkFilesThread.start()
-    #weekThread = threading.Thread(target=weeklyVideo)
-    #weekThread.daemon = True
-    #weekThread.start()
-    #monthThread = threading.Thread(target=monthlyVideo)
-    #monthThread.daemon = True
-    #monthThread.start()
-    #everythingThread = threading.Thread(target=everythingVideo)
-    #everythingThread.daemon = True
-    #everythingThread.start()
+    weekThread = threading.Thread(target=weeklyVideo)
+    weekThread.daemon = True
+    weekThread.start()
+    monthThread = threading.Thread(target=monthlyVideo)
+    monthThread.daemon = True
+    monthThread.start()
+    everythingThread = threading.Thread(target=everythingVideo)
+    everythingThread.daemon = True
+    everythingThread.start()
     
     print('nothing')
     t0 =time.time()
