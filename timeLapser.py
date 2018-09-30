@@ -177,7 +177,7 @@ def weeklyVideo():
                     c.execute("Select hours from images where dayRec = ?",(int(day),))
                     F = c.fetchall()
                     hours = np.sort(F)
-                    
+                    print(hours)
                     c.execute("Select year,month,day from images where dayRec = ?",(int(day),))
                     year,month,dayPic = c.fetchall()[0]
 
@@ -220,7 +220,6 @@ def monthlyVideo():
 
     stepMonth = 2
 
-    print('video')
     while running:
         currentMonth = datetime.date.today().month
         currentYear = datetime.date.today().year
@@ -288,7 +287,7 @@ def monthlyVideo():
 def everythingVideo():
     #tSleep = 27-dt.datetime.now().hour
     #print('sleeping for '+str(tSleep)+' hours')
-    print('video')
+    print( ' -- Everything Video Started -- ')
     while running:
         image = 0
         step = 0
@@ -372,7 +371,6 @@ def main():
     everythingThread.daemon = True
     everythingThread.start()
     
-    print('nothing')
     t0 =time.time()
     while running:
         time.sleep(60*60)
