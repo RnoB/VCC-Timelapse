@@ -163,9 +163,8 @@ def weeklyVideo():
             if len(F) == 0 and week<currentWeek:
 
                 step = 0
-                
-                os.remove(weekTemp+'*.jpg')
-                os.remove(weekTemp+'*.mp4')
+                for f in os.listdir(weekTemp)
+                    os.remove(os.path.join(weekTemp, f))
                 c.execute("Select dayRec from images where week = ?",(int(week),))
                 F = c.fetchall()
 
@@ -203,6 +202,8 @@ def weeklyVideo():
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
             
                 conn.commit()
+                for f in os.listdir(weekTemp)
+                    os.remove(os.path.join(weekTemp, f))
         conn.close()
         tSleep = 25-dt.datetime.now().hour+7*24
         print('sleeping for '+str(tSleep)+' hours')
@@ -235,11 +236,9 @@ def monthlyVideo():
             if len(F) == 0 and month != (currentYear,currentMonth):
                 step = 0
                 image = 0   
-                try:
-                    os.remove(monthTemp+'*.jpg')
-                    os.remove(monthTemp+'*.mp4')
-                except:
-                    pass
+                
+                for f in os.listdir(monthTemp)
+                    os.remove(os.path.join(monthTemp, f))
                 c.execute("Select dayRec from images where  year = ? and month = ?",month)
                 F = c.fetchall()
                 days = np.sort(np.unique(F))
@@ -272,6 +271,8 @@ def monthlyVideo():
                 c.execute("INSERT INTO video VALUES (?,?,?,?,?,?)",values)
             
                 conn.commit()
+                for f in os.listdir(monthTemp)
+                    os.remove(os.path.join(monthTemp, f))
         conn.close()   
         try:
             os.remove(monthTemp+'*.jpg')
@@ -297,11 +298,8 @@ def everythingVideo():
         c.execute("Select dayRec from images")
         F = c.fetchall()
         days = np.sort(np.unique(F))
-        try:
-            os.remove(everythingTemp+'*.jpg')
-            os.remove(everythingTemp+'*.mp4')
-        except:
-            pass
+        for f in os.listdir(everythingTemp)
+            os.remove(os.path.join(everythingTemp, f))
 
         stepEverything = int(np.ceil(len(days)/30.0))
 
@@ -336,11 +334,8 @@ def everythingVideo():
     
         conn.commit()
         conn.close()
-        try:
-            os.remove(everythingTemp+'*.jpg')
-            os.remove(everythingTemp+'*.mp4')
-        except:
-            pass
+        for f in os.listdir(everythingTemp)
+            os.remove(os.path.join(everythingTemp, f))
         time.sleep(3*24*3600)
 
 
