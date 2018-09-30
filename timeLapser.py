@@ -77,7 +77,7 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
 
         for date in fileDate:
             print(date)
-            if len(date) == 15:
+            if len(date) == 15 and date[0] == '2':
                 year = date[0:4]
                 month = date[5:7]
                 day = date[8:10]
