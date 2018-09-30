@@ -76,8 +76,8 @@ def dbFiller(today = False,tSleep = 7*60*60*24):
         fileDate = np.unique(fileDate)
 
         for date in fileDate:
-
-            if len(date) == 15 and date[-3:-1]=='jpg':
+            print(date)
+            if len(date) == 15:
                 year = date[0:4]
                 month = date[5:7]
                 day = date[8:10]
