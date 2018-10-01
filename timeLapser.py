@@ -159,7 +159,7 @@ def weeklyVideo():
         for week in weeks:
             c.execute("Select * from video where week = ? and duration = ?",(int(week),'week'))
             F = c.fetchall()
-            print(week,currentWeek)
+            
             if len(F) == 0 and week<currentWeek:
 
                 step = 0
