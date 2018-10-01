@@ -205,14 +205,14 @@ def weeklyVideo():
                 for f in os.listdir(weekTemp):
                     os.remove(os.path.join(weekTemp, f))
         conn.close()
-        tSleep = 25-datetime.datetime.now().hour+6*24
+        tSleep = 25-datetime.datetime.now().hour
         print('sleeping for '+str(tSleep)+' hours')
         try:
             os.remove(weekTemp+'*.jpg')
             os.remove(weekTemp+'*.mp4')
         except:
             pass
-        time.sleep(tSleep)
+        time.sleep(3600*tSleep)
         
 
 def monthlyVideo():
@@ -280,7 +280,7 @@ def monthlyVideo():
         except:
             pass
         tSleep = 26-datetime.datetime.now().hour
-        time.sleep(tSleep)
+        time.sleep(3600*tSleep)
 
 
 
