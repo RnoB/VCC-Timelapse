@@ -159,7 +159,7 @@ def weeklyVideo():
         for week in weeks:
             c.execute("Select * from video where week = ? and duration = ?",(int(week),'week'))
             F = c.fetchall()
-
+            print(week,currentWeek)
             if len(F) == 0 and week<currentWeek:
 
                 step = 0
@@ -205,7 +205,7 @@ def weeklyVideo():
                 for f in os.listdir(weekTemp):
                     os.remove(os.path.join(weekTemp, f))
         conn.close()
-        tSleep = 25-datetime.datetime.now().hour+7*24
+        tSleep = 25-datetime.datetime.now().hour+6*24
         print('sleeping for '+str(tSleep)+' hours')
         try:
             os.remove(weekTemp+'*.jpg')
