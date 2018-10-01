@@ -336,7 +336,7 @@ def everythingVideo():
         conn.close()
         for f in os.listdir(everythingTemp):
             os.remove(os.path.join(everythingTemp, f))
-        tSleep = 27-datetime.datetime.now().hour+3*24
+        tSleep = 27-datetime.datetime.now().hour+2*24
         print('sleeping for '+str(tSleep)+' hours')
         time.sleep(tSleep*3600)
 
